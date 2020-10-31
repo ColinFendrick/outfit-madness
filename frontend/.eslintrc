@@ -4,7 +4,9 @@
     "es6": true,
     "node": true
   },
-  "extends": ["eslint:recommended"],
+  "extends": ["eslint:recommended", "react-app",
+    "react-app/jest"
+  ],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -27,7 +29,18 @@
         "objectsInObjects": false
       }
     ],
-    "no-unused-vars": "off",
+    "array-bracket-spacing": [
+      "error",
+      "never"
+    ],
+    "comma-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "no-unused-vars": ["error", { "vars": "local" }],
     "linebreak-style": [
       "error",
       "unix"
