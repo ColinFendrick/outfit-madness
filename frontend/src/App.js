@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
-import { Switch, Link, } from 'react-router-dom';
+import { Switch, Link, Route } from 'react-router-dom';
 
 import EntryService from './services/EntryService';
+import { AddEntry, Bracket, Vote } from './components';
 
 const App = () => {
 	const currentUser = true;
 
 	useEffect(() => {
 		(async () => {
-			const res = await EntryService.healthCheck();
+			const res = await EntryService.getAll();
 			console.log(res);
 		})();
 	});
@@ -23,33 +24,14 @@ const App = () => {
 					{currentUser ? (
 						<>
 							<li className = 'nav-item'>
-								<Link to = {'/tutorials'} className = 'nav-link'>
-									Tutorials
-								</Link>
-							</li>
-							<li className = 'nav-item'>
 								<Link to = {'/add'} className = 'nav-link'>
-									Add
+									Add Entry
 								</Link>
 							</li>
+
 							<li className = 'nav-item'>
-								<Link to ={'/adduser'} className = 'nav-link'>
-									Add a User
-								</Link>
-							</li>
-							<li className = 'nav-item'>
-								<Link to ={'/users'} className = 'nav-link'>
-									All Users
-								</Link>
-							</li>
-							<li className = 'nav-item'>
-								<Link to ={'/users/uninsured'} className = 'nav-link'>
-									Uninsured
-								</Link>
-							</li>
-							<li className = 'nav-item'>
-								<Link to ={'/users/insured'} className = 'nav-link'>
-									Insured
+								<Link to ={'/bracket'} className = 'nav-link'>
+									View Bracket
 								</Link>
 							</li>
 
@@ -80,6 +62,9 @@ const App = () => {
 
 			<div className = 'container mt-3' >
 				<Switch>
+					<Route path='/bracket' component={Bracket} />
+					<Route path='/vote' component={Vote} />
+					<Route path='/add' component={AddEntry} />
 					{/* <Route exact path='/register' component={Register} />
 					<Route exact path='/tutorials' component={TutorialsList} />
 					<Route exact path='/add' component={AddTutorial} />

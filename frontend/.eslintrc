@@ -40,6 +40,7 @@
         "after": true
       }
     ],
+    "comma-dangle": ["error", "never"],
     "no-unused-vars": ["error", { "vars": "local" }],
     "linebreak-style": [
       "error",
