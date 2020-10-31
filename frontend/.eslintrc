@@ -58,6 +58,7 @@
       "always"
     ],
     "eol-last": ["error", "always"],
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 0 }],
     "space-infix-ops": [
       "error",
       {

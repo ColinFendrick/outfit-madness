@@ -1,10 +1,17 @@
-import {
-	Switch,
-	Link,
-} from 'react-router-dom';
+import { useEffect } from 'react';
+import { Switch, Link, } from 'react-router-dom';
+
+import EntryService from './services/EntryService';
 
 const App = () => {
 	const currentUser = true;
+
+	useEffect(() => {
+		(async () => {
+			const res = await EntryService.healthCheck();
+			console.log(res);
+		})();
+	});
 
 	return (
 		<div>
