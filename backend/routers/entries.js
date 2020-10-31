@@ -7,6 +7,10 @@ router.get('/entries', entries.getAllEntries);
 
 router.post('/entries', entries.createEntry);
 
-router.put('/entries:id', entries.voteOnEntry);
+router.put('/entries/:id', entries.voteOnEntry);
+
+router.delete('/entries/:id', entries.deleteEntry);
+
+router.delete('/entries', entries.deleteAll);
 
 module.exports = router;

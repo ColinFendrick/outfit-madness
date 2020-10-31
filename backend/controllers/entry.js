@@ -30,8 +30,32 @@ const voteOnEntry = async (req, res) => {
 	}
 };
 
+const deleteEntry = async (req, res) => {
+	try {
+		const entry = await Entry.findOneAndDelete({
+			_id: req.params.id
+		});
+		if (!entry) res.status(404).send();
+
+		res.send(entry);
+	} catch (e) {
+		res.status(400).send(e);
+	}
+};
+
+const deleteAll = async (req, res) => {
+	try {
+		await Entry.deleteMany();
+		res.send({ message: 'All entries have been successfully deleteed' });
+	} catch (e) {
+		res.status(500).send(e);
+	}
+};
+
 module.exports = {
 	getAllEntries,
 	createEntry,
-	voteOnEntry
+	voteOnEntry,
+	deleteEntry,
+	deleteAll
 };
