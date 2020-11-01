@@ -26,11 +26,28 @@ const useEntryContext = () => {
 		}
 	};
 
+	const deleteEntry = async entry => {
+		try {
+			await EntryService.deleteEntry(entry);
+		} catch (e) {
+			throw new Error(e);
+		}
+	};
+
+	const deleteAll = async () => {
+		try {
+			await EntryService.deleteAll();
+		} catch (e) {
+			throw new Error(e);
+		}
+	};
 	return {
 		entries: context.entries,
 		setEntries,
 		addEntry,
-		voteOnEntry
+		voteOnEntry,
+		deleteEntry,
+		deleteAll
 	};
 };
 

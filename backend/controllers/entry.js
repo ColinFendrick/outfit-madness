@@ -35,7 +35,7 @@ const deleteEntry = async (req, res) => {
 		const entry = await Entry.findOneAndDelete({
 			_id: req.params.id
 		});
-		if (!entry) res.status(404).send();
+		if (!entry) res.status(404).send({ message: 'Entry not found' });
 
 		res.send(entry);
 	} catch (e) {
