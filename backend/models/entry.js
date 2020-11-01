@@ -14,6 +14,18 @@ const entrySchema = new mongoose.Schema({
 		type: Number,
 		default: 0,
 		required: true
+	},
+	bracket: {
+		type: String,
+		enum: ['celebrities-2000', 'celebrities-contemporary', 'rap-rb-musicians', 'athletes']
+	},
+	seed: {
+		type: Number,
+		validate(value) {
+			if (value < 1 || value > 16) {
+				throw new Error('Seed must be between one and sixteen');
+			}
+		}
 	}
 }, {  timestamps: true });
 

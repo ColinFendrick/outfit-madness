@@ -1,29 +1,26 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import useEntryContext from '../hooks/useEntryContext';
 
 const Add = () => {
-	const emptyEntry = { name: '', imageURL: '', bracket: 'athletes', seed: 1 };
+	const defaultValues = { name: '111', imageURL: '', bracket: 'athletes', seed: 1 };
 	const { addEntry } = useEntryContext();
-	const [state, setState] = useState({ entry: emptyEntry, submitted: false, error: '' });
+	const [state, setState] = useState({ submitted: false, error: '' });
+	const { register, handleSubmit, errors, reset, getValues } = useForm(defaultValues);
 
-	const handleInputChange = event => {
-		const {
-			name,
-			value
-		} = event.target;
-
-		setState({ ...state, entry: { ...state.entry, [name]: value }});
+	const clearForm = () => {
+		reset({ defaultValues });
+		setState({ submitted: false, error: '' });
 	};
 
-	const newEntry = () => setState({ ...state, entry: emptyEntry, submitted: false, error: '' });
-
-	const handleSubmit = async () => {
+	const onSubmit = async data => {
 		try {
-			await addEntry(state.entry);
-			setState({ ...state, entry: emptyEntry, submitted: true, error: '' });
+			await addEntry(data);
+			reset();
+			setState({ submitted: true, error: '' });
 		} catch (e) {
-			setState({ ...state, error: e.message, submitted: true });
+			setState({ error: e.message, submitted: true });
 		}
 	};
 
@@ -32,113 +29,119 @@ const Add = () => {
 			{state.submitted && !state.error ? (
 				<div>
 					<h4>You submitted successfully!</h4>
-					<button className='btn btn-success' onClick={newEntry}>
+					<button className='btn btn-success' onClick={clearForm}>
             Add
 					</button>
 				</div>
 			) : state.submitted && state.error ? (
 				<div>
 					<h2>{state.error}</h2>
-					<button className='btn btn-success' onClick={newEntry}>
+					<button className='btn btn-success' onClick={clearForm}>
             Try Again
 					</button>
 				</div>
 			) : (
 				<div>
-					<div className='form-group'>
-						<label htmlFor='name'>Name</label>
-						<input
-							type='text'
-							className='form-control'
-							id='name'
-							required
-							value={state.entry.name}
-							onChange={handleInputChange}
-							name='name'
-						/>
+					<form onSubmit={handleSubmit(onSubmit)}>
+						<div className='form-group'>
+							<label htmlFor='name'>Name</label>
+							<input
+								type='text'
+								className='form-control'
+								id='name'
+								required
+								ref={register({ required: true })}
+								defaultValue={getValues('name')}
+								name='name'
+							/>
+							{errors.name && 'Name of entry is required'}
 
-						<label htmlFor='imageURL'>Image URL</label>
-						<input
-							type='text'
-							className='form-control'
-							id='imageURL'
-							required
-							value={state.entry.imageURL}
-							onChange={handleInputChange}
-							name='imageURL'
-						/>
+							<label htmlFor='imageURL'>Image URL</label>
+							<input
+								type='text'
+								className='form-control'
+								id='imageURL'
+								required
+								ref={register({ required: true })}
+								defaultValue=''
+								name='imageURL'
+							/>
+							{errors.imageURL && 'Must provide a path to the hosted image'}
 
-						<label htmlFor='seed'>Seed</label>
-						<input
-							type='number'
-							className='form-control'
-							id='seed'
-							required
-							value={state.entry.seed}
-							onChange={handleInputChange}
-							name='seed'
-							min='1'
-							max='16'
-						/>
+							<label htmlFor='seed'>Seed</label>
+							<input
+								type='number'
+								className='form-control'
+								id='seed'
+								required
+								ref={register({ required: true, min: 1, max: 16 })}
+								defaultValue={defaultValues['seed']}
+								name='seed'
+							/>
+							{errors.seed?.type === 'required' && 'This field cannot be blank'}
+							{(errors.seed?.type === 'min' || errors.seed?.type === 'max') && 'Must be a number between 1 and 16'}
 
-						<div className='form-check form-check-inline'>
-							<label className='form-check-label'>
-								<input
-									className='form-check-input'
-									type='radio'
-									name='bracket'
-									id='bracket-celeb-2000'
-									value='celebrities-2000'
-									onChange={handleInputChange}
-									checked={state.entry.bracket === 'celebrities-2000'}
-								/> 2000s Celebrities
-							</label>
+							<br />
+
+
+							<section>
+								<label htmlFor='bracket'>Bracket</label>
+								<div className='form-check'>
+									<input
+										name='bracket'
+										type='radio'
+										value=' celebrieies-2000'
+										ref={register({ required: true })}
+										defaultChecked={false}
+									/>
+									1990s-2000s Celebrities
+								</div>
+
+								<div className='form-check'>
+									<input
+										name='bracket'
+										type='radio'
+										value='celebrities-contemporary'
+										ref={register({ required: true })}
+										defaultChecked={false}
+									/>
+									Contemporary Celebrities
+								</div>
+
+								<div className='form-check'>
+									<input
+										name='bracket'
+										type='radio'
+										value='rap-rb-musicians'
+										ref={register({ required: true })}
+										defaultChecked={defaultValues['bracket'] === 'rap-rb-musicians'}
+									/>
+									Rap/RB Musicians
+								</div>
+
+								<div className='form-check'>
+									<input
+										name='bracket'
+										type='radio'
+										value='athletes'
+										ref={register({ required: true })}
+										defaultChecked={defaultValues['bracket'] === 'athletes'}
+									/>
+									Athletes
+								</div>
+							</section>
+
+
 						</div>
-						<div className='form-check form-check-inline'>
-							<label className='form-check-label'>
-								<input
-									className='form-check-input'
-									type='radio'
-									name='bracket'
-									id='bracket-celeb-contemp'
-									value='celebrities-contemporary'
-									onChange={handleInputChange}
-									checked={state.entry.bracket === 'celebrities-contemporary'}
-								/> Contemporary Celebrities
-							</label>
-						</div>
-						<div className='form-check form-check-inline disabled'>
-							<label className='form-check-label'>
-								<input
-									className='form-check-input'
-									type='radio'
-									name='bracket'
-									id='bracket-music'
-									value='rap-rb-musicians'
-									onChange={handleInputChange}
-									checked={state.entry.bracket === 'rap-rb-musicians'}
-								/> Hip-Hop/R&B Musicians
-							</label>
-						</div>
 
-						<div className='form-check form-check-inline disabled'>
-							<label className='form-check-label'>
-								<input
-									className='form-check-input'
-									type='radio'
-									name='bracket'
-									id='bracket-athletes'
-									value='athletes'
-									onChange={handleInputChange}
-									checked={state.entry.bracket === 'athletes'}
-								/> Athletes
-							</label>
-						</div>
-					</div>
-
-					<button onClick={handleSubmit} className='btn btn-success'>
-            Submit
-					</button>
+						<button type='submit' className='btn btn-success'>
+							Submit
+						</button>
+						{' '}
+						<button type='button' className='btn btn-warning' onClick={clearForm}>
+							Clear Form
+						</button>
+					</form>
 				</div>
 			)}
 		</div>

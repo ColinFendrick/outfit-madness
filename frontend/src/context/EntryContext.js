@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState, createContext } from 'react';
 
-const EntryContext = React.createContext([{}, () => {}]);
+const EntryContext = createContext([{}, () => {}]);
 
 const EntryProvider = props => {
 
