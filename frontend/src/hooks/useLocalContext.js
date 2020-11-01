@@ -11,6 +11,7 @@ const useLocalContext = () => {
 			setContext({
 				...context,
 				voting: {
+					...context.voting,
 					currentSeed: [context.voting.currentSeed[0] + 1, context.voting.currentSeed[1] - 1]
 				}
 			});
@@ -19,14 +20,16 @@ const useLocalContext = () => {
 			setContext({
 				...context,
 				voting: {
-					currentSeed: [1, 16], bracket: brackets[currentBracketIx + 1]
+					currentSeed: [1, 16],
+					bracket: brackets[currentBracketIx + 1]
 				}
 			});
 		} else {
 			setContext({
 				...context,
 				voting: {
-					currentSeed: [], bracket: ''
+					currentSeed: [],
+					bracket: ''
 				}
 			});
 		}

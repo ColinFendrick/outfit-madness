@@ -10,7 +10,6 @@ const Add = () => {
 	const [state, setState] = useState({ submitted: false, error: '' });
 	const { register, handleSubmit, errors, reset, getValues } = useForm(defaultValues);
 
-
 	const clearForm = () => {
 		reset({ defaultValues });
 		setState({ submitted: false, error: '' });

@@ -9,11 +9,9 @@ const useEntryContext = () => {
 	const setEntries = entries =>
 		setContext({ ...context, entries });
 
-
 	const voteOnEntry = async entry => {
 		try {
-			const res = await EntryService.update(entry);
-			console.log(res);
+			await EntryService.update(entry);
 		} catch (e) {
 			throw new Error(e);
 		}

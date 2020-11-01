@@ -11,7 +11,7 @@ const Bracket = () => {
 			const res = await EntryService.getAll();
 			setEntries(res.data);
 		})();
-	}, []);
+	}, []); // eslint-disable-line
 
 	return (
 		<div>
