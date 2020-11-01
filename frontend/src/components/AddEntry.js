@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import useEntryContext from '../hooks/useEntryContext';
+import brackets from '../enums/brackets';
 
 const Add = () => {
-	const defaultValues = { name: '111', imageURL: '', bracket: 'athletes', seed: 1 };
+	const defaultValues = { name: '111', imageURL: '', bracket: brackets[0], seed: 1 };
 	const { addEntry } = useEntryContext();
 	const [state, setState] = useState({ submitted: false, error: '' });
 	const { register, handleSubmit, errors, reset, getValues } = useForm(defaultValues);
+
 
 	const clearForm = () => {
 		reset({ defaultValues });
@@ -90,9 +92,9 @@ const Add = () => {
 									<input
 										name='bracket'
 										type='radio'
-										value=' celebrieies-2000'
+										value={brackets[0]}
 										ref={register({ required: true })}
-										defaultChecked={false}
+										defaultChecked={defaultValues['bracket'] === brackets[0]}
 									/>
 									1990s-2000s Celebrities
 								</div>
@@ -101,9 +103,9 @@ const Add = () => {
 									<input
 										name='bracket'
 										type='radio'
-										value='celebrities-contemporary'
+										value={[brackets[1]]}
 										ref={register({ required: true })}
-										defaultChecked={false}
+										defaultChecked={defaultValues['bracket'] === brackets[1]}
 									/>
 									Contemporary Celebrities
 								</div>
@@ -112,9 +114,9 @@ const Add = () => {
 									<input
 										name='bracket'
 										type='radio'
-										value='rap-rb-musicians'
+										value={brackets[2]}
 										ref={register({ required: true })}
-										defaultChecked={defaultValues['bracket'] === 'rap-rb-musicians'}
+										defaultChecked={defaultValues['bracket'] === brackets[2]}
 									/>
 									Rap/RB Musicians
 								</div>
@@ -123,9 +125,9 @@ const Add = () => {
 									<input
 										name='bracket'
 										type='radio'
-										value='athletes'
+										value={brackets[3]}
 										ref={register({ required: true })}
-										defaultChecked={defaultValues['bracket'] === 'athletes'}
+										defaultChecked={defaultValues['bracket'] === brackets[3]}
 									/>
 									Athletes
 								</div>

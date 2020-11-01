@@ -7,13 +7,16 @@ import './index.css';
 import './App.css';
 
 import { EntryProvider } from './context/EntryContext';
+import { LocalProvider } from './context/LocalContext';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
 	<BrowserRouter>
 		<EntryProvider>
-			<App />
+			<LocalProvider>
+				<App />
+			</LocalProvider>
 		</EntryProvider>
 	</BrowserRouter>,
 	document.getElementById('root')

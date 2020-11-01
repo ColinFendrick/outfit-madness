@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const brackets = require('../enums/brackets');
+
 const entrySchema = new mongoose.Schema({
 	name: {
 		type: String,
@@ -17,7 +19,7 @@ const entrySchema = new mongoose.Schema({
 	},
 	bracket: {
 		type: String,
-		enum: ['celebrities-2000', 'celebrities-contemporary', 'rap-rb-musicians', 'athletes']
+		enum: brackets
 	},
 	seed: {
 		type: Number,

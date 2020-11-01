@@ -6,7 +6,6 @@ import useEntryContext from '../hooks/useEntryContext';
 const Bracket = () => {
 	const { entries, setEntries } = useEntryContext();
 
-
 	useEffect(() => {
 		(async () => {
 			const res = await EntryService.getAll();
