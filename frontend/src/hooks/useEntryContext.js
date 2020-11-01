@@ -15,16 +15,16 @@ const useEntryContext = () => {
 			const res = await EntryService.update(entry);
 			console.log(res);
 		} catch (e) {
-			console.log(e);
+			throw new Error(e);
 		}
 	};
 
 	const addEntry = async entry => {
 		try {
 			const res = await EntryService.add(entry);
-			console.log(res);
+			return res;
 		} catch (e) {
-			console.log(e);
+			throw new Error(e);
 		}
 	};
 

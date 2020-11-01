@@ -19,7 +19,7 @@ const Bracket = () => {
       Bracket
 			{entries && entries.map(entry => (
 				<div key={entry._id}>
-					{entry.name}
+					{entry.name} - {entry.bracket}: {entry.seed}
 				</div>
 			))}
 		</div>
