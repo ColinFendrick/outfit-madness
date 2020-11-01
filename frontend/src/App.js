@@ -1,18 +1,9 @@
-import { useEffect } from 'react';
 import { Switch, Link, Route } from 'react-router-dom';
 
-import EntryService from './services/EntryService';
 import { AddEntry, Bracket, Vote } from './components';
 
 const App = () => {
 	const currentUser = true;
-
-	useEffect(() => {
-		(async () => {
-			const res = await EntryService.getAll();
-			console.log(res);
-		})();
-	});
 
 	return (
 		<div>
@@ -23,6 +14,12 @@ const App = () => {
 				<div className = 'navbar-nav mr-auto'>
 					{currentUser ? (
 						<>
+							<li className = 'nav-item'>
+								<Link to ={'/vote'} className = 'nav-link'>
+									Go Vote!
+								</Link>
+							</li>
+
 							<li className = 'nav-item'>
 								<Link to = {'/add'} className = 'nav-link'>
 									Add Entry
