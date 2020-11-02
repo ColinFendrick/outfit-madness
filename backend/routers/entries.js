@@ -5,6 +5,8 @@ const entries =  require('../controllers/entry');
 
 router.get('/entries', entries.getAllEntries);
 
+router.get('/entries/:id', entries.getEntry);
+
 router.post('/entries', entries.createEntry);
 
 router.put('/entries/:id', entries.editEntry);

@@ -9,11 +9,20 @@ const getAllEntries = async (req, res) => {
 	}
 };
 
+const getEntry = async (req, res) => {
+	try {
+		const entry = await Entry.findById(req.params.id);
+		res.send(entry);
+	} catch (e) {
+		res.status(500).send(e);
+	}
+};
+
 const createEntry = async (req, res) => {
 	try {
 		const entry = new Entry(req.body);
 		await entry.save();
-		res.status(201).send(entry);
+		res.send(entry);
 	} catch (e) {
 		res.status(400).send(e);
 	}
@@ -54,6 +63,7 @@ const deleteAll = async (req, res) => {
 
 module.exports = {
 	getAllEntries,
+	getEntry,
 	createEntry,
 	editEntry,
 	deleteEntry,

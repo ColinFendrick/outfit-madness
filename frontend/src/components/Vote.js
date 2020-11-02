@@ -1,24 +1,31 @@
 import { useState, useEffect } from 'react';
+import { Container, Col } from 'reactstrap';
 
-import EntryService from '../services/EntryService';
 import useEntryContext from '../hooks/useEntryContext';
 import useLocalContext from '../hooks/useLocalContext';
 
 const Vote = () => {
-	const { entries, setEntries, editEntry } = useEntryContext();
+	const {
+		entries,
+		setEntries,
+		getAllEntries,
+		getEntryById,
+		editEntry
+	} = useEntryContext();
 	const { votingState, moveToNextVote } = useLocalContext();
 	const [state, setState] = useState({ error: '' });
 
 	useEffect(() => {
 		(async () => {
-			const res = await EntryService.getAll();
+			const res = await getAllEntries();
 			setEntries(res.data);
 		})();
 	}, []); //eslint-disable-line
 
-	const handleVote = async ({ _id, votes }) => {
+	const handleVote = async entry => {
 		try {
-			editEntry({ _id, votes: votes + 1 });
+			const { data: { votes }} = await getEntryById(entry);
+			await editEntry({ _id: entry._id, votes: votes + 1 });
 			moveToNextVote();
 		} catch (e) {
 			setState({ error: e.message });
@@ -31,25 +38,31 @@ const Vote = () => {
 			entry.seed === votingState.currentSeed[pos] && entry.bracket === votingState.bracket
 		);
 
-		return [entries.find(findEntry(0)), entries.find(findEntry(1))];
+		const [first, second] = [entries.find(findEntry(0)), entries.find(findEntry(1))];
+		return (first || second) ? [first, second] : [];
 	};
 
 	return (
-		<div>
+		<Container className='d-flex'>
 			{state.error ? (
 				<div>
 					<h2>{state.error}</h2>
 				</div>
 			) : (
-				findCurrentPair()?.map(entry => (
+				findCurrentPair().map(entry => (
 					entry && (
-						<div key={entry._id} onClick={() => handleVote(entry)}>
-							{entry.name} - {entry.bracket}: {entry.seed}
-						</div>
+						<Col
+							key={entry._id}
+							className='d-flex flex-column align-items-center justify-content-center vote-option'
+							onClick={() => handleVote(entry)}
+						>
+							<img src='https://theundefeated.com/wp-content/uploads/2016/07/gettyimages-56887299_master.jpg' alt='Tim Duncan' />
+							<span>{entry.name} - {entry.bracket}: {entry.seed}</span>
+						</Col>
 					)
 				))
 			)}
-		</div>
+		</Container>
 	);
 };
 

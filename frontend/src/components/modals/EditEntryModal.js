@@ -8,11 +8,13 @@ import {
 
 import useLocalContext from '../../hooks/useLocalContext';
 import useEntryContext from '../../hooks/useEntryContext';
-import { defaultValues } from '../AddEntry';
+import brackets from '../../enums/brackets';
+
+const defaultValues = { name: '', imageURL: '', bracket: brackets[0], seed: 1 };
 
 const EditEntryModal = ({ entry = defaultValues, reload }) => {
 	const { toggleModal } = useLocalContext();
-	const { editEntry } = useEntryContext();
+	const { editEntry, addEntry } = useEntryContext();
 	const [state, setState] = useState({ error: '' });
 	const { register, handleSubmit, errors, reset } = useForm(entry);
 
@@ -23,7 +25,11 @@ const EditEntryModal = ({ entry = defaultValues, reload }) => {
 
 	const onSubmit = async data => {
 		try {
-			await editEntry({ ...data, _id: entry._id });
+			if (entry._id) {
+				await editEntry({ ...data, _id: entry._id });
+			} else {
+				await addEntry(data);
+			}
 			await reload();
 			toggleModal()();
 		} catch (e) {
@@ -33,7 +39,7 @@ const EditEntryModal = ({ entry = defaultValues, reload }) => {
 
 	return (
 		<>
-			<ModalHeader toggle={() => toggleModal()()}> Edit {entry.name} </ModalHeader>
+			<ModalHeader toggle={() => toggleModal()()}> {entry._id ? `Edit ${entry.name}` : 'Add Entry'}</ModalHeader>
 			{state.error ? (
 				<ModalBody>
 					<div>
@@ -47,7 +53,6 @@ const EditEntryModal = ({ entry = defaultValues, reload }) => {
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<ModalBody>
 						<div className='submit-form'>
-
 
 							<label htmlFor='name'>Name</label>
 							<input
@@ -86,6 +91,52 @@ const EditEntryModal = ({ entry = defaultValues, reload }) => {
 							{errors.seed?.type === 'required' && 'This field cannot be blank'}
 							{(errors.seed?.type === 'min' || errors.seed?.type === 'max') && 'Must be a number between 1 and 16'}
 
+							<section>
+								<label htmlFor='bracket'>Bracket</label>
+								<div className='form-check'>
+									<input
+										name='bracket'
+										type='radio'
+										value={brackets[0]}
+										ref={register({ required: true })}
+										defaultChecked={entry['bracket'] === brackets[0]}
+									/>
+									1990s-2000s Celebrities
+								</div>
+
+								<div className='form-check'>
+									<input
+										name='bracket'
+										type='radio'
+										value={[brackets[1]]}
+										ref={register({ required: true })}
+										defaultChecked={entry['bracket'] === brackets[1]}
+									/>
+									Contemporary Celebrities
+								</div>
+
+								<div className='form-check'>
+									<input
+										name='bracket'
+										type='radio'
+										value={brackets[2]}
+										ref={register({ required: true })}
+										defaultChecked={entry['bracket'] === brackets[2]}
+									/>
+									Rap/RB Musicians
+								</div>
+
+								<div className='form-check'>
+									<input
+										name='bracket'
+										type='radio'
+										value={brackets[3]}
+										ref={register({ required: true })}
+										defaultChecked={entry['bracket'] === brackets[3]}
+									/>
+									Athletes
+								</div>
+							</section>
 
 						</div>
 					</ModalBody>
