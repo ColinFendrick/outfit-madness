@@ -1,3 +1,26 @@
 .table {
   color: #ddd;
 }
+
+.modal-content {
+  background-color: #282c34;
+}
+
+.modal-content span {
+  color: #ddd;
+}
+
+.vote-option {
+}
+
+.vote-option > img {
+  width: 40vw;
+  height: 70vh;
+  transition: width 0.2s, height 0.2s, boxshadow 0.1s;
+}
+
+.vote-option:hover > img{
+  width: 41vw;
+  height: 71vh;
+  box-shadow: 0 3px 30px #dddddd4d;
+}
