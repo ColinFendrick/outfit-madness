@@ -1,42 +1,80 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Table } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
-import EntryService from '../services/EntryService';
 import useEntryContext from '../hooks/useEntryContext';
 import useLocalContext from '../hooks/useLocalContext';
 import { EditEntryModal } from './modals';
 
 const Bracket = () => {
-	const { entries, setEntries, deleteEntry, deleteAll } = useEntryContext();
+	const {
+		entries,
+		setEntries,
+		getAllEntries,
+		deleteEntry,
+		deleteAll
+	} = useEntryContext();
 	const { toggleModal } = useLocalContext();
-
-	useEffect(() => {
-		(async () => {
-			const res = await EntryService.getAll();
-			setEntries(res.data);
-		})();
-	}, []); // eslint-disable-line
+	const [sort, setSort] = useState({ field: null, dir: true });
 
 	const reload = async () => {
-		const res = await EntryService.getAll();
+		const res = await getAllEntries();
 		setEntries(res.data);
 	};
 
+	useEffect(() => reload(), []); // eslint-disable-line
+
 	const methodAndReload = method => async (entry = null) => {
 		await method(entry);
-		await reload();
+		reload();
 	};
+
+	const updateSort = field =>
+		setSort({
+			field,
+			dir: sort.field === field ? !sort.dir : true
+		});
+
+	const sortFunc = (a, b) => {
+		if (!sort.field) return 0;
+
+		if (sort.dir) {
+			if (a[sort.field] > b[sort.field]) return 1;
+			else return -1;
+		} else {
+			if (a[sort.field] > b[sort.field]) return -1;
+			else return 1;
+		}
+	};
+
+	const fields = ['name', 'seed', 'bracket', 'votes'];
+
+	const headers = fields.map((field, ix) => (
+		<th onClick={() => updateSort(field)} key={`${field}-header-${ix}`}>
+			{field}{' '}
+			<FontAwesomeIcon
+				icon={sort.field === field && !sort.dir ? faCaretDown : faCaretUp} style={{ color: sort.field === field ? '#ddd' : '#dddddd4d' }}
+			/>
+		</th>
+	));
+
+	const rows = entry => fields.map(field => (
+		<td
+			key={`${entry[field]}-${entry._id}`}
+			onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}
+		>
+			{entry[field]}
+		</td>
+	));
 
 	return (
 		<div>
       Bracket
-			<Table>
+			<Table dark striped hover className='sortable'>
 				<thead>
 					<tr>
-						<th>Name</th>
-						<th>Seed</th>
-						<th>Bracket</th>
-						<th>Votes</th>
+						{headers}
 						<th>
 							<button className='btn btn-danger' onClick={methodAndReload(deleteAll)}>
 								Delete All Entries
@@ -45,12 +83,9 @@ const Bracket = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{entries && entries.map(entry => (
+					{entries && entries.sort(sortFunc).map(entry => (
 						<tr key={entry._id}>
-							<td>{entry.name}</td>
-							<td>{entry.seed}</td>
-							<td>{entry.bracket}</td>
-							<td>{entry.votes}</td>
+							{rows(entry)}
 							<td>
 								<button className='btn btn-warning' onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}>
 									Edit
@@ -63,6 +98,12 @@ const Bracket = () => {
 					))}
 				</tbody>
 			</Table>
+
+			<section>
+				<button className='btn btn-success' onClick={() => toggleModal(<EditEntryModal reload={reload} />)()}>
+					Add Entry
+				</button>
+			</section>
 		</div>
 	);
 };
