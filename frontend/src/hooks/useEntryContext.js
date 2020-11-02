@@ -9,17 +9,18 @@ const useEntryContext = () => {
 	const setEntries = entries =>
 		setContext({ ...context, entries });
 
-	const voteOnEntry = async entry => {
+	const addEntry = async entry => {
 		try {
-			await EntryService.update(entry);
+			const res = await EntryService.add(entry);
+			return res;
 		} catch (e) {
 			throw new Error(e);
 		}
 	};
 
-	const addEntry = async entry => {
+	const editEntry = async entry => {
 		try {
-			const res = await EntryService.add(entry);
+			const res = await EntryService.update(entry);
 			return res;
 		} catch (e) {
 			throw new Error(e);
@@ -45,7 +46,7 @@ const useEntryContext = () => {
 		entries: context.entries,
 		setEntries,
 		addEntry,
-		voteOnEntry,
+		editEntry,
 		deleteEntry,
 		deleteAll
 	};

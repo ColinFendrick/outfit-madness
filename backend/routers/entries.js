@@ -7,7 +7,7 @@ router.get('/entries', entries.getAllEntries);
 
 router.post('/entries', entries.createEntry);
 
-router.put('/entries/:id', entries.voteOnEntry);
+router.put('/entries/:id', entries.editEntry);
 
 router.delete('/entries/:id', entries.deleteEntry);
 

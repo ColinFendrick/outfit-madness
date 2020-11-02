@@ -35,9 +35,20 @@ const useLocalContext = () => {
 		}
 	};
 
+	const toggleModal = (children = null) => ctxOverrides => setContext({
+		...context,
+		ui: {
+			...context.ui,
+			modalChildren: children
+		},
+		...ctxOverrides
+	});
+
 	return {
 		votingState: context.voting,
-		moveToNextVote
+		uiState: context.ui,
+		moveToNextVote,
+		toggleModal
 	};
 };
 

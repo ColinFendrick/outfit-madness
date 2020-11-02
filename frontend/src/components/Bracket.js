@@ -3,9 +3,12 @@ import { Table } from 'reactstrap';
 
 import EntryService from '../services/EntryService';
 import useEntryContext from '../hooks/useEntryContext';
+import useLocalContext from '../hooks/useLocalContext';
+import { EditEntryModal } from './modals';
 
 const Bracket = () => {
 	const { entries, setEntries, deleteEntry, deleteAll } = useEntryContext();
+	const { toggleModal } = useLocalContext();
 
 	useEffect(() => {
 		(async () => {
@@ -14,10 +17,14 @@ const Bracket = () => {
 		})();
 	}, []); // eslint-disable-line
 
-	const deleteAndReload = method => async (entry = null) => {
-		await method(entry);
+	const reload = async () => {
 		const res = await EntryService.getAll();
 		setEntries(res.data);
+	};
+
+	const methodAndReload = method => async (entry = null) => {
+		await method(entry);
+		await reload();
 	};
 
 	return (
@@ -31,7 +38,7 @@ const Bracket = () => {
 						<th>Bracket</th>
 						<th>Votes</th>
 						<th>
-							<button className='btn btn-danger' onClick={deleteAndReload(deleteAll)}>
+							<button className='btn btn-danger' onClick={methodAndReload(deleteAll)}>
 								Delete All Entries
 							</button>
 						</th>
@@ -45,7 +52,10 @@ const Bracket = () => {
 							<td>{entry.bracket}</td>
 							<td>{entry.votes}</td>
 							<td>
-								<button className='btn btn-danger' onClick={() => deleteAndReload(deleteEntry)(entry)}>
+								<button className='btn btn-warning' onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}>
+									Edit
+								</button>
+								<button className='btn btn-danger' onClick={() => methodAndReload(deleteEntry)(entry)}>
 									Delete
 								</button>
 							</td>

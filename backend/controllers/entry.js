@@ -19,7 +19,7 @@ const createEntry = async (req, res) => {
 	}
 };
 
-const voteOnEntry = async (req, res) => {
+const editEntry = async (req, res) => {
 	try {
 		const entry = await Entry.findByIdAndUpdate(
 			req.params.id, req.body, { useFindAndModify: false }
@@ -55,7 +55,7 @@ const deleteAll = async (req, res) => {
 module.exports = {
 	getAllEntries,
 	createEntry,
-	voteOnEntry,
+	editEntry,
 	deleteEntry,
 	deleteAll
 };

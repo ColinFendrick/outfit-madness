@@ -6,18 +6,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import './App.css';
 
-import { EntryProvider } from './context/EntryContext';
-import { LocalProvider } from './context/LocalContext';
+import { ContextContainer } from './containers';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
 	<BrowserRouter>
-		<EntryProvider>
-			<LocalProvider>
-				<App />
-			</LocalProvider>
-		</EntryProvider>
+		<ContextContainer>
+			<App />
+		</ContextContainer>
 	</BrowserRouter>,
 	document.getElementById('root')
 );

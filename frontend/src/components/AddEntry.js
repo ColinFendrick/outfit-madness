@@ -4,11 +4,12 @@ import { useForm } from 'react-hook-form';
 import useEntryContext from '../hooks/useEntryContext';
 import brackets from '../enums/brackets';
 
-const Add = () => {
-	const defaultValues = { name: '111', imageURL: '', bracket: brackets[0], seed: 1 };
+export const defaultValues = { name: '', imageURL: '', bracket: brackets[0], seed: 1 };
+
+const AddEntry = () => {
 	const { addEntry } = useEntryContext();
 	const [state, setState] = useState({ submitted: false, error: '' });
-	const { register, handleSubmit, errors, reset, getValues } = useForm(defaultValues);
+	const { register, handleSubmit, errors, reset } = useForm(defaultValues);
 
 	const clearForm = () => {
 		reset({ defaultValues });
@@ -52,7 +53,7 @@ const Add = () => {
 								id='name'
 								required
 								ref={register({ required: true })}
-								defaultValue={getValues('name')}
+								defaultValue={defaultValues['name']}
 								name='name'
 							/>
 							{errors.name && 'Name of entry is required'}
@@ -64,7 +65,7 @@ const Add = () => {
 								id='imageURL'
 								required
 								ref={register({ required: true })}
-								defaultValue=''
+								defaultValue={defaultValues['imageURL']}
 								name='imageURL'
 							/>
 							{errors.imageURL && 'Must provide a path to the hosted image'}
@@ -149,4 +150,4 @@ const Add = () => {
 	);
 };
 
-export default Add;
+export default AddEntry;

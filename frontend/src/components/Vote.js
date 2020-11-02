@@ -5,7 +5,7 @@ import useEntryContext from '../hooks/useEntryContext';
 import useLocalContext from '../hooks/useLocalContext';
 
 const Vote = () => {
-	const { entries, setEntries, voteOnEntry } = useEntryContext();
+	const { entries, setEntries, editEntry } = useEntryContext();
 	const { votingState, moveToNextVote } = useLocalContext();
 	const [state, setState] = useState({ error: '' });
 
@@ -18,7 +18,7 @@ const Vote = () => {
 
 	const handleVote = async ({ _id, votes }) => {
 		try {
-			voteOnEntry({ _id, votes: votes + 1 });
+			editEntry({ _id, votes: votes + 1 });
 			moveToNextVote();
 		} catch (e) {
 			setState({ error: e.message });
