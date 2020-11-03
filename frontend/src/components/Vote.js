@@ -13,34 +13,48 @@ const Vote = () => {
 		getEntryById,
 		editEntry
 	} = useEntryContext();
-	const { headersReady } = useUserContext();
+	const { headersReady, checkHeaders } = useUserContext();
 	const { votingState, moveToNextVote } = useLocalContext();
 	const [state, setState] = useState({ error: '' });
 
 	useEffect(() => {
-		(async () => {
-			if (headersReady) {
-				try {
-					const res = await getAllEntries();
-					setEntries(res.data);
-				} catch (e) {
-					setState({ error: e.message });
-				}
-			}
+		checkHeaders({
+			method: getAllEntries,
+			errorMethod: error => setState({ error }),
+			cb: setEntries
 		})();
+		// (async () => {
+		// 	if (headersReady) {
+		// 		try {
+		// 			const res = await getAllEntries();
+		// 			setEntries(res.data);
+		// 		} catch (e) {
+		// 			setState({ error: e.message });
+		// 		}
+		// 	}
+		// })();
 	}, [headersReady]); // eslint-disable-line
 
-	const handleVote = async entry => {
-		if (headersReady) {
-			try {
-				const { data: { votes }} = await getEntryById(entry);
-				await editEntry({ _id: entry._id, votes: votes + 1 });
-				moveToNextVote();
-			} catch (e) {
-				setState({ error: e.message });
-			}
+	// const handleVote = async entry => {
+	// 	if (headersReady) {
+	// 		try {
+	// 			const { data: { votes }} = await getEntryById(entry);
+	// 			await editEntry({ _id: entry._id, votes: votes + 1 });
+	// 			moveToNextVote();
+	// 		} catch (e) {
+	// 			setState({ error: e.message });
+	// 		}
+	// 	}
+	// };
+
+	const handleVote = checkHeaders({
+		method: getEntryById,
+		errorMethod: error => setState({ error }),
+		cb: async data => {
+			await editEntry({ _id: data._id, votes: data.votes + 1 });
+			moveToNextVote();
 		}
-	};
+	});
 
 
 	const findCurrentPair = () => {

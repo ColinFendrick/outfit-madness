@@ -26,8 +26,32 @@ const useUserContext = () => {
 		window.location.reload();
 	};
 
+	const checkHeaders = ({ method, errorMethod, cb }) => async (data = null) => {
+		if (headersReady) {
+			try {
+				const res = await method(data);
+				if (cb) {
+					cb(res?.data);
+				} else {
+					return res;
+				}
+			} catch (e) {
+				if (errorMethod) {
+					errorMethod(e.message);
+				} else {
+					throw new Error(e);
+				}
+			}
+		}
+	};
+
 	return {
-		currentUser, setCurrentUser, getAndSetUser, logOut, headersReady
+		currentUser,
+		setCurrentUser,
+		getAndSetUser,
+		logOut,
+		headersReady,
+		checkHeaders
 	};
 };
 

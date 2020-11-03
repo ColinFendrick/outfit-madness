@@ -16,37 +16,45 @@ const Bracket = () => {
 		deleteEntry,
 		deleteAll
 	} = useEntryContext();
-	const { headersReady } = useUserContext();
+	const { headersReady, checkHeaders } = useUserContext();
 	const { toggleModal } = useLocalContext();
 	const [sort, setSort] = useState({ field: null, dir: true });
 	const [error, setError] = useState('');
 
-	const reload = async () => {
-		if (headersReady) {
-			try {
-				const res = await getAllEntries();
-				setEntries(res.data);
-			} catch (e) {
-				setError(e.message);
-			}
-		}
-	};
+	// const reload = async () => {
+	// 	if (headersReady) {
+	// 		try {
+	// 			const res = await getAllEntries();
+	// 			setEntries(res.data);
+	// 		} catch (e) {
+	// 			setError(e.message);
+	// 		}
+	// 	}
+	// };
+
+	const reload = checkHeaders({
+		method:getAllEntries,
+		errorMethod: setError,
+		cb: setEntries
+	});
 
 	useEffect(
-		() => reload(),
+		() => {
+			reload();
+		},
 		[headersReady] // eslint-disable-line
 	);
 
-	const methodAndReload = method => async (entry = null) => {
-		if (headersReady) {
-			try {
-				await method(entry);
-				reload();
-			} catch (e) {
-				setError(e.message);
-			}
-		}
-	};
+	// const methodAndReload = method => async (entry = null) => {
+	// 	if (headersReady) {
+	// 		try {
+	// 			await method(entry);
+	// 			reload();
+	// 		} catch (e) {
+	// 			setError(e.message);
+	// 		}
+	// 	}
+	// };
 
 	const updateSort = field =>
 		setSort({
@@ -100,8 +108,11 @@ const Bracket = () => {
 							<tr>
 								{headers}
 								<th>
-									<button className='btn btn-danger' onClick={methodAndReload(deleteAll)}>
-								Delete All Entries
+									<button
+										className='btn btn-danger'
+										onClick={checkHeaders({ method: deleteAll, errorMethod: setError, cb: reload })}
+									>
+										Delete All Entries
 									</button>
 								</th>
 							</tr>
@@ -111,10 +122,16 @@ const Bracket = () => {
 								<tr key={entry._id}>
 									{rows(entry)}
 									<td>
-										<button className='btn btn-warning' onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}>
+										<button className='btn btn-warning'
+											onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}
+										>
 											Edit
 										</button>
-										<button className='btn btn-danger' onClick={() => methodAndReload(deleteEntry)(entry)}>
+										<button className='btn btn-danger'
+											onClick={() => checkHeaders({
+												method: deleteEntry, errorMethod: setError, cb: reload
+											})(entry)}
+										>
 											Delete
 										</button>
 									</td>
