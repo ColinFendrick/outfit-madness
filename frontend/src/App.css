@@ -2,7 +2,8 @@
   color: #ddd;
 }
 
-.modal-content {
+.modal-content,
+.card-container {
   background-color: #282c34;
 }
 
@@ -23,4 +24,9 @@
   width: 41vw;
   height: 71vh;
   box-shadow: 0 3px 30px #dddddd4d;
+}
+
+.submit-form {
+  max-width: 300px;
+  margin: auto;
 }

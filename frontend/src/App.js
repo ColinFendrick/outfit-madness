@@ -1,12 +1,38 @@
-import { Switch, Link, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Switch, Link, Route, useHistory } from 'react-router-dom';
 
-import { Bracket, Vote } from './components';
+import {
+	Register,
+	Login,
+	Bracket,
+	Vote
+} from './components';
 import { ModalContainer } from './containers';
 import useLocalContext from './hooks/useLocalContext';
+import AuthService from './services/AuthService';
 
 const App = () => {
+	const [currentUser, setCurrentUser] = useState(undefined);
+	const history = useHistory();
 	const { uiState } = useLocalContext();
-	const currentUser = true;
+
+	useEffect(() => {
+		const user = AuthService.getCurrentUser();
+
+		if (user) {
+			setCurrentUser(user);
+		} else {
+			if (history.location.pathname !== '/login') {
+				history.push('/login');
+				window.location.reload();
+			}
+		}
+	}, [history]);
+
+	const logOut = () => {
+		AuthService.logout();
+		window.location.reload();
+	};
 
 	return (
 		<>
@@ -31,6 +57,12 @@ const App = () => {
 									</Link>
 								</li>
 
+								<button
+									className='btn btn-outline-secondary'
+									type='button'
+									onClick={logOut}
+								>Log out</button>
+
 							</>
 						) : (
 							<>
@@ -52,8 +84,10 @@ const App = () => {
 
 				<div className='container mt-3'>
 					<Switch>
+						<Route exact path='/register' component={Register} />
 						<Route path='/bracket' component={Bracket} />
 						<Route path='/vote' component={Vote} />
+						<Route path={['/', '/login']} component={Login} />
 					</Switch>
 				</div>
 			</div>

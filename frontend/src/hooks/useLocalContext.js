@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { LocalContext } from '../context/LocalContext';
-import brackets from '../enums/brackets';
+import brackets from '../constants/brackets';
 
 const useLocalContext = () => {
 	const [context, setContext] = useContext(LocalContext);

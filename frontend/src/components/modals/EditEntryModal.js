@@ -8,7 +8,7 @@ import {
 
 import useLocalContext from '../../hooks/useLocalContext';
 import useEntryContext from '../../hooks/useEntryContext';
-import brackets from '../../enums/brackets';
+import brackets from '../../constants/brackets';
 
 const defaultValues = { name: '', imageURL: '', bracket: brackets[0], seed: 1 };
 

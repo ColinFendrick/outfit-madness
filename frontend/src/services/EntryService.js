@@ -8,20 +8,22 @@ const getById = data => http.get(`/entries/${data._id}`);
 
 const update = data => http.put(`/entries/${data._id}`, data);
 
-const add = data => http.post('/entries', data);
+const add = data => http.post('/admin/entries', data);
 
-const deleteEntry = data => http.delete(`/entries/${data._id}`);
+const deleteEntry = data => http.delete(`/admin/entries/${data._id}`);
 
-const deleteAll = () => http.delete('/entries');
+const deleteAllEntries = () => http.delete('/admin/entries');
 
 const service = {
 	healthCheck,
 	getAll,
 	getById,
-	add,
 	update,
+
+	// admin:
+	add,
 	deleteEntry,
-	deleteAll
+	deleteAllEntries
 };
 
 export default service;

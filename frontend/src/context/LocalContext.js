@@ -1,6 +1,6 @@
 import { useState, createContext } from 'react';
 
-import brackets from '../enums/brackets';
+import brackets from '../constants/brackets';
 
 const LocalContext = createContext([{}, () => {}]);
 

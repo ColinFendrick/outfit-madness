@@ -56,7 +56,7 @@ const useEntryContext = () => {
 
 	const deleteAll = async () => {
 		try {
-			await EntryService.deleteAll();
+			await EntryService.deleteAllEntries();
 		} catch (e) {
 			throw new Error(e);
 		}
