@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Container, Col } from 'reactstrap';
 
 import useEntryContext from '../hooks/useEntryContext';
 import useLocalContext from '../hooks/useLocalContext';
+import { UserContext } from '../context/UserContext';
 
 const Vote = () => {
 	const {
@@ -12,23 +13,32 @@ const Vote = () => {
 		getEntryById,
 		editEntry
 	} = useEntryContext();
+	const [,, headersReady] = useContext(UserContext);
 	const { votingState, moveToNextVote } = useLocalContext();
 	const [state, setState] = useState({ error: '' });
 
 	useEffect(() => {
 		(async () => {
-			const res = await getAllEntries();
-			setEntries(res.data);
+			if (headersReady) {
+				try {
+					const res = await getAllEntries();
+					setEntries(res.data);
+				} catch (e) {
+					setState({ error: e.message });
+				}
+			}
 		})();
-	}, []); //eslint-disable-line
+	}, [headersReady]); //eslint-disable-line
 
 	const handleVote = async entry => {
-		try {
-			const { data: { votes }} = await getEntryById(entry);
-			await editEntry({ _id: entry._id, votes: votes + 1 });
-			moveToNextVote();
-		} catch (e) {
-			setState({ error: e.message });
+		if (headersReady) {
+			try {
+				const { data: { votes }} = await getEntryById(entry);
+				await editEntry({ _id: entry._id, votes: votes + 1 });
+				moveToNextVote();
+			} catch (e) {
+				setState({ error: e.message });
+			}
 		}
 	};
 

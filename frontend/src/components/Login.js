@@ -32,7 +32,7 @@ const Login = props => {
 				setLoading(false);
 				return;
 			} else {
-				props.history.push('/tutorials');
+				props.history.push('/vote');
 				window.location.reload();
 			}
 		} catch (e) {

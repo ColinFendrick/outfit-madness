@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Table } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 import useEntryContext from '../hooks/useEntryContext';
 import useLocalContext from '../hooks/useLocalContext';
+import { UserContext } from '../context/UserContext';
 import { EditEntryModal } from './modals';
 
 const Bracket = () => {
@@ -15,19 +16,33 @@ const Bracket = () => {
 		deleteEntry,
 		deleteAll
 	} = useEntryContext();
+	const [,, headersReady] = useContext(UserContext);
 	const { toggleModal } = useLocalContext();
 	const [sort, setSort] = useState({ field: null, dir: true });
+	const [error, setError] = useState('');
 
 	const reload = async () => {
-		const res = await getAllEntries();
-		setEntries(res.data);
+		if (headersReady) {
+			try {
+				const res = await getAllEntries();
+				setEntries(res.data);
+			} catch (e) {
+				setError(e.message);
+			}
+		}
 	};
 
 	useEffect(() => reload(), []); // eslint-disable-line
 
 	const methodAndReload = method => async (entry = null) => {
-		await method(entry);
-		reload();
+		if (headersReady) {
+			try {
+				await method(entry);
+				reload();
+			} catch (e) {
+				setError(e.message);
+			}
+		}
 	};
 
 	const updateSort = field =>
@@ -71,39 +86,47 @@ const Bracket = () => {
 	return (
 		<div>
       Bracket
-			<Table dark striped hover className='sortable'>
-				<thead>
-					<tr>
-						{headers}
-						<th>
-							<button className='btn btn-danger' onClick={methodAndReload(deleteAll)}>
+			{error ? (
+				<div>
+					<h2>{error}</h2>
+				</div>
+			) : (
+				<>
+					<Table dark striped hover className='sortable'>
+						<thead>
+							<tr>
+								{headers}
+								<th>
+									<button className='btn btn-danger' onClick={methodAndReload(deleteAll)}>
 								Delete All Entries
-							</button>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					{entries && entries.sort(sortFunc).map(entry => (
-						<tr key={entry._id}>
-							{rows(entry)}
-							<td>
-								<button className='btn btn-warning' onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}>
+									</button>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{entries && entries.sort(sortFunc).map(entry => (
+								<tr key={entry._id}>
+									{rows(entry)}
+									<td>
+										<button className='btn btn-warning' onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}>
 									Edit
-								</button>
-								<button className='btn btn-danger' onClick={() => methodAndReload(deleteEntry)(entry)}>
+										</button>
+										<button className='btn btn-danger' onClick={() => methodAndReload(deleteEntry)(entry)}>
 									Delete
-								</button>
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</Table>
+										</button>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</Table>
 
-			<section>
-				<button className='btn btn-success' onClick={() => toggleModal(<EditEntryModal reload={reload} />)()}>
+					<section>
+						<button className='btn btn-success' onClick={() => toggleModal(<EditEntryModal reload={reload} />)()}>
 					Add Entry
-				</button>
-			</section>
+						</button>
+					</section>
+				</>
+			)}
 		</div>
 	);
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Switch, Link, Route, useHistory } from 'react-router-dom';
 
 import {
@@ -10,9 +10,10 @@ import {
 import { ModalContainer } from './containers';
 import useLocalContext from './hooks/useLocalContext';
 import AuthService from './services/AuthService';
+import { UserContext } from './context/UserContext';
 
 const App = () => {
-	const [currentUser, setCurrentUser] = useState(undefined);
+	const [currentUser, setCurrentUser] = useContext(UserContext);
 	const history = useHistory();
 	const { uiState } = useLocalContext();
 
@@ -27,7 +28,8 @@ const App = () => {
 				window.location.reload();
 			}
 		}
-	}, [history]);
+
+	}, [history, setCurrentUser]);
 
 	const logOut = () => {
 		AuthService.logout();
