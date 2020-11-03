@@ -29,7 +29,7 @@ const entrySchema = new mongoose.Schema({
 			}
 		}
 	}
-}, {  timestamps: true });
+}, { timestamps: true });
 
 const Entry = mongoose.model('Entry', entrySchema);
 

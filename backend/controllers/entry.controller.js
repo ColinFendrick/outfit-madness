@@ -1,4 +1,4 @@
-const Entry = require('../models/entry');
+const Entry = require('../models/entry.model');
 
 const getAllEntries = async (req, res) => {
 	try {
@@ -18,16 +18,6 @@ const getEntry = async (req, res) => {
 	}
 };
 
-const createEntry = async (req, res) => {
-	try {
-		const entry = new Entry(req.body);
-		await entry.save();
-		res.send(entry);
-	} catch (e) {
-		res.status(400).send(e);
-	}
-};
-
 const editEntry = async (req, res) => {
 	try {
 		const entry = await Entry.findByIdAndUpdate(
@@ -36,6 +26,17 @@ const editEntry = async (req, res) => {
 		res.send({ message: `Entry ${entry.id} was updated successfully.` });
 	} catch (e) {
 		res.status(404).send(e);
+	}
+};
+
+// admin
+const createEntry = async (req, res) => {
+	try {
+		const entry = new Entry(req.body);
+		await entry.save();
+		res.send(entry);
+	} catch (e) {
+		res.status(400).send(e);
 	}
 };
 
@@ -52,7 +53,7 @@ const deleteEntry = async (req, res) => {
 	}
 };
 
-const deleteAll = async (req, res) => {
+const deleteAllEntries = async (req, res) => {
 	try {
 		await Entry.deleteMany();
 		res.send({ message: 'All entries have been successfully deleteed' });
@@ -64,8 +65,10 @@ const deleteAll = async (req, res) => {
 module.exports = {
 	getAllEntries,
 	getEntry,
-	createEntry,
 	editEntry,
+
+	// admin:
+	createEntry,
 	deleteEntry,
-	deleteAll
+	deleteAllEntries
 };

@@ -1,12 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+// var jwt = require('jsonwebtoken');
+
+const admin = require('./.admin');
 // const cors = require('cors');
 require('./db/mongoose');
-const entryRouter = require('./routers/entries');
+const entryRouter = require('./routes/entries.routes');
+const userRouter = require('./routes/users.routes');
+const adminRouter = require('./routes/admin.routes');
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
+
+app.set('secretKey', admin.secretKey); // jwt secret token
 
 app.use(express.json());
 
@@ -23,20 +30,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.use(cors(corsOptions));
 
-// // parse requests of content-type - application/json
-// app.use(bodyParser.json());
-
-// // parse requests of content-type - application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({
-// 	extended: true
-// }));
-
-// simple route
-
-
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+	res.header('Access-Control-Allow-Headers', 'x-access-token, Origin, X-Requested-With, Content-Type, Accept');
 	res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
 	next();
 });
@@ -48,6 +44,8 @@ app.get('/', (req, res) => {
 });
 
 app.use(entryRouter);
+app.use(userRouter);
+app.use(adminRouter);
 
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}.`);
