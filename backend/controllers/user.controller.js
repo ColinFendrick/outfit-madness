@@ -6,7 +6,6 @@ const User = require('../models/user.model');
 const admin = require('../.admin');
 
 const createUser = async (req, res, next) => {
-	console.log(admin.adminUsers);
 	const role = admin.adminUsers.includes(req.body.email) ? 'admin' : 'user';
 	try {
 		const user = await User.create({

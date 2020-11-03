@@ -1,5 +1,5 @@
-import { useContext, useEffect } from 'react';
-import { Switch, Link, Route, useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Switch, Link, Route } from 'react-router-dom';
 
 import {
 	Register,
@@ -9,32 +9,16 @@ import {
 } from './components';
 import { ModalContainer } from './containers';
 import useLocalContext from './hooks/useLocalContext';
-import AuthService from './services/AuthService';
-import { UserContext } from './context/UserContext';
+import useUserContext from './hooks/useUserContext';
 
 const App = () => {
-	const [currentUser, setCurrentUser] = useContext(UserContext);
-	const history = useHistory();
+	const { currentUser, getAndSetUser, logOut } = useUserContext();
 	const { uiState } = useLocalContext();
 
-	useEffect(() => {
-		const user = AuthService.getCurrentUser();
-
-		if (user) {
-			setCurrentUser(user);
-		} else {
-			if (history.location.pathname !== '/login') {
-				history.push('/login');
-				window.location.reload();
-			}
-		}
-
-	}, [history, setCurrentUser]);
-
-	const logOut = () => {
-		AuthService.logout();
-		window.location.reload();
-	};
+	useEffect(
+		() => void getAndSetUser(),
+		[] // eslint-disable-line
+	);
 
 	return (
 		<>

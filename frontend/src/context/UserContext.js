@@ -19,7 +19,10 @@ const UserProvider = props => {
 	);
 
 	return (
-		<UserContext.Provider value={[currentUser, setCurrentUser, headersReady]}>
+		<UserContext.Provider value={[
+			{ currentUser, headersReady },
+			setCurrentUser
+		]}>
 			{props.children}
 		</UserContext.Provider>
 	);

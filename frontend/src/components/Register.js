@@ -20,7 +20,6 @@ const Register = () => {
 			setMessage(res.data.message);
 			setSuccessful(true);
 		} catch (e) {
-			console.log(e.message);
 			setMessage(e.message || 'Something went wrong!');
 			setSuccessful(false);
 		}

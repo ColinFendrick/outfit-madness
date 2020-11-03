@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Col } from 'reactstrap';
 
 import useEntryContext from '../hooks/useEntryContext';
 import useLocalContext from '../hooks/useLocalContext';
-import { UserContext } from '../context/UserContext';
+import useUserContext from '../hooks/useUserContext';
 
 const Vote = () => {
 	const {
@@ -13,7 +13,7 @@ const Vote = () => {
 		getEntryById,
 		editEntry
 	} = useEntryContext();
-	const [,, headersReady] = useContext(UserContext);
+	const { headersReady } = useUserContext();
 	const { votingState, moveToNextVote } = useLocalContext();
 	const [state, setState] = useState({ error: '' });
 
@@ -28,7 +28,7 @@ const Vote = () => {
 				}
 			}
 		})();
-	}, [headersReady]); //eslint-disable-line
+	}, [headersReady]); // eslint-disable-line
 
 	const handleVote = async entry => {
 		if (headersReady) {

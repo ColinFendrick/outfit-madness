@@ -1,8 +1,6 @@
 const User = require('../models/user.model');
 
 const confirmAdmin = async (req, res, next) => {
-	console.log('confirmadmin', req.userId);
-
 	try {
 		const user = await User.findById(req.userId);
 

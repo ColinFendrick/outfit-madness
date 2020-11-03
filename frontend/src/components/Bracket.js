@@ -1,11 +1,11 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { Table } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 import useEntryContext from '../hooks/useEntryContext';
 import useLocalContext from '../hooks/useLocalContext';
-import { UserContext } from '../context/UserContext';
+import useUserContext from '../hooks/useUserContext';
 import { EditEntryModal } from './modals';
 
 const Bracket = () => {
@@ -16,7 +16,7 @@ const Bracket = () => {
 		deleteEntry,
 		deleteAll
 	} = useEntryContext();
-	const [,, headersReady] = useContext(UserContext);
+	const { headersReady } = useUserContext();
 	const { toggleModal } = useLocalContext();
 	const [sort, setSort] = useState({ field: null, dir: true });
 	const [error, setError] = useState('');
@@ -32,7 +32,10 @@ const Bracket = () => {
 		}
 	};
 
-	useEffect(() => reload(), []); // eslint-disable-line
+	useEffect(
+		() => reload(),
+		[headersReady] // eslint-disable-line
+	);
 
 	const methodAndReload = method => async (entry = null) => {
 		if (headersReady) {
@@ -76,7 +79,7 @@ const Bracket = () => {
 
 	const rows = entry => fields.map(field => (
 		<td
-			key={`${entry[field]}-${entry._id}`}
+			key={`${field}-${entry[field]}-${entry._id}`}
 			onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}
 		>
 			{entry[field]}
@@ -109,10 +112,10 @@ const Bracket = () => {
 									{rows(entry)}
 									<td>
 										<button className='btn btn-warning' onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}>
-									Edit
+											Edit
 										</button>
 										<button className='btn btn-danger' onClick={() => methodAndReload(deleteEntry)(entry)}>
-									Delete
+											Delete
 										</button>
 									</td>
 								</tr>
