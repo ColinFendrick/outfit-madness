@@ -12,11 +12,13 @@ const register = ({
 
 const login = async ({
 	username,
+	email,
 	password
 }) => {
 	try {
 		const response = await http.post('/authenticate', {
 			username,
+			email,
 			password
 		});
 		if (response.data.accessToken) {

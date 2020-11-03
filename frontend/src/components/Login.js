@@ -28,8 +28,8 @@ const Login = props => {
 		try {
 			const res = await AuthService.login(data);
 			if ([400, 401, 404].includes(res.status)) {
-				setMessage(res.data.message);
 				setLoading(false);
+				setMessage(res.data.message);
 				return;
 			} else {
 				props.history.push('/vote');
