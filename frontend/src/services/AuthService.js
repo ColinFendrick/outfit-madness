@@ -16,15 +16,15 @@ const login = async ({
 	password
 }) => {
 	try {
-		const response = await http.post('/authenticate', {
+		const res = await http.post('/authenticate', {
 			username,
 			email,
 			password
 		});
-		if (response.data.accessToken) {
-			localStorage.setItem('user', JSON.stringify(response.data));
+		if (res.data.accessToken) {
+			localStorage.setItem('user', JSON.stringify(res.data));
 		}
-		return response;
+		return res;
 	} catch (e) {
 		return e;
 	}
@@ -32,7 +32,11 @@ const login = async ({
 
 const logout = () => localStorage.removeItem('user');
 
-const getCurrentUser = () => JSON.parse(localStorage.getItem('user'));
+const getLocalUser = () => JSON.parse(localStorage.getItem('user'));
+
+const getUserById = data => http.get(`/users/${data._id}`);
+
+const updateCurrentUser = data => http.put(`/users/${data._id}`, data);
 
 // admin:
 const getAllUsers = () => http.get('/admin/users');
@@ -43,7 +47,9 @@ const auth = {
 	register,
 	login,
 	logout,
-	getCurrentUser,
+	getLocalUser,
+	getUserById,
+	updateCurrentUser,
 
 	// admin:
 	getAllUsers,

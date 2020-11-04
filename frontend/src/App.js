@@ -5,6 +5,7 @@ import {
 	Register,
 	Login,
 	Bracket,
+	Profile,
 	Vote
 } from './components';
 import { ModalContainer } from './containers';
@@ -72,6 +73,7 @@ const App = () => {
 					<Switch>
 						<Route exact path='/register' component={Register} />
 						<Route path='/bracket' component={Bracket} />
+						<Route path='/profile' component={Profile} />
 						<Route path='/vote' component={Vote} />
 						<Route path={['/', '/login']} component={Login} />
 					</Switch>

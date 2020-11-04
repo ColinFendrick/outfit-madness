@@ -16,45 +16,21 @@ const Bracket = () => {
 		deleteEntry,
 		deleteAll
 	} = useEntryContext();
-	const { headersReady, checkHeaders } = useUserContext();
+	const { headersReady, checkHeadersBefore } = useUserContext();
 	const { toggleModal } = useLocalContext();
 	const [sort, setSort] = useState({ field: null, dir: true });
 	const [error, setError] = useState('');
 
-	// const reload = async () => {
-	// 	if (headersReady) {
-	// 		try {
-	// 			const res = await getAllEntries();
-	// 			setEntries(res.data);
-	// 		} catch (e) {
-	// 			setError(e.message);
-	// 		}
-	// 	}
-	// };
-
-	const reload = checkHeaders({
-		method:getAllEntries,
+	const reload = checkHeadersBefore({
+		method: getAllEntries,
 		errorMethod: setError,
 		cb: setEntries
 	});
 
 	useEffect(
-		() => {
-			reload();
-		},
+		() => reload(),
 		[headersReady] // eslint-disable-line
 	);
-
-	// const methodAndReload = method => async (entry = null) => {
-	// 	if (headersReady) {
-	// 		try {
-	// 			await method(entry);
-	// 			reload();
-	// 		} catch (e) {
-	// 			setError(e.message);
-	// 		}
-	// 	}
-	// };
 
 	const updateSort = field =>
 		setSort({
@@ -110,7 +86,7 @@ const Bracket = () => {
 								<th>
 									<button
 										className='btn btn-danger'
-										onClick={checkHeaders({ method: deleteAll, errorMethod: setError, cb: reload })}
+										onClick={checkHeadersBefore({ method: deleteAll, errorMethod: setError, cb: reload })}
 									>
 										Delete All Entries
 									</button>
@@ -128,7 +104,7 @@ const Bracket = () => {
 											Edit
 										</button>
 										<button className='btn btn-danger'
-											onClick={() => checkHeaders({
+											onClick={() => checkHeadersBefore({
 												method: deleteEntry, errorMethod: setError, cb: reload
 											})(entry)}
 										>

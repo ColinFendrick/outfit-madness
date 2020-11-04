@@ -15,7 +15,7 @@ const defaultValues = { name: '', imageURL: '', bracket: brackets[0], seed: 1 };
 const EditEntryModal = ({ entry = defaultValues, reload }) => {
 	const { toggleModal } = useLocalContext();
 	const { editEntry, addEntry } = useEntryContext();
-	const [state, setState] = useState({ error: '' });
+	const [state, setState] = useState({ submitted: false, error: '' });
 	const { register, handleSubmit, errors, reset } = useForm(entry);
 
 	const clearForm = () => {
