@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import useUserContext from '../hooks/useUserContext';
-import useLocalContext from '../hooks/useLocalContext';
+import { useUserContext, useLocalContext } from '../hooks';
 import { EditUserModal } from './modals';
 
 

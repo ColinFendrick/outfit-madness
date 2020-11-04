@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container, Col } from 'reactstrap';
 
-import useEntryContext from '../hooks/useEntryContext';
-import useUserContext from '../hooks/useUserContext';
+import { useEntryContext, useUserContext } from '../hooks';
 import { bracketEnums } from '../constants/brackets';
 
 const Vote = () => {

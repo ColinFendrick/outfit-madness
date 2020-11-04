@@ -9,8 +9,7 @@ import {
 	Vote
 } from './components';
 import { ModalContainer } from './containers';
-import useLocalContext from './hooks/useLocalContext';
-import useUserContext from './hooks/useUserContext';
+import { useUserContext, useLocalContext } from './hooks';
 
 const App = () => {
 	const { currentUser, getAndSetUser, logOut } = useUserContext();

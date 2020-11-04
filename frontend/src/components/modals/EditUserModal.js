@@ -6,8 +6,7 @@ import {
 	ModalFooter
 } from 'reactstrap';
 
-import useLocalContext from '../../hooks/useLocalContext';
-import useUserContext from '../../hooks/useUserContext';
+import { useUserContext, useLocalContext } from '../../hooks';
 import { emailRegex } from '../../constants/regex';
 
 const EditUserModal = ({ user }) => {

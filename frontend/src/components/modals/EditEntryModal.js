@@ -6,8 +6,8 @@ import {
 	ModalFooter
 } from 'reactstrap';
 
-import useLocalContext from '../../hooks/useLocalContext';
-import useEntryContext from '../../hooks/useEntryContext';
+import { useEntryContext, useLocalContext } from '../../hooks';
+
 import { brackets } from '../../constants/brackets';
 
 const defaultValues = { name: '', imageURL: '', bracket: brackets[0], seed: 1 };

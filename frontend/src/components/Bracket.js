@@ -3,9 +3,7 @@ import { Table } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
-import useEntryContext from '../hooks/useEntryContext';
-import useLocalContext from '../hooks/useLocalContext';
-import useUserContext from '../hooks/useUserContext';
+import { useEntryContext, useUserContext, useLocalContext } from '../hooks';
 import { EditEntryModal } from './modals';
 import { bracketEnums } from '../constants/brackets';
 
