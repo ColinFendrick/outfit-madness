@@ -74,7 +74,7 @@ const Vote = () => {
 									onClick={() => handleVote(entry)}
 								>
 									<img src='https://theundefeated.com/wp-content/uploads/2016/07/gettyimages-56887299_master.jpg' alt='Tim Duncan' />
-									<span>{entry.name}: {entry.seed} in {bracketEnums[entry.bracket]}</span>
+									<span>{entry.name}: {entry.seed} seed in {bracketEnums[entry.bracket]}</span>
 								</Col>
 							)
 						))}

@@ -68,6 +68,7 @@ const Login = props => {
 							id='email'
 							ref={register({ pattern: emailRegex })}
 							defaultValue=''
+							autoComplete='email'
 							name='email' />
 						{errors.email?.type === 'bothEmpty' && errors.email?.message}
 						{errors.email?.type === 'pattern' && 'Has to be a valid email'}

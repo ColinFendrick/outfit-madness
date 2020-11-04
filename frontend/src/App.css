@@ -17,7 +17,7 @@
 .vote-option > img {
   width: 50%;
   height: 70%;
-  transition: width 0.2s, height 0.2s, boxshadow 0.1s;
+  transition: width 0.2s ease, height 0.2s ease, boxshadow 0.1s ease-in;
 }
 
 .vote-option:hover > img{
