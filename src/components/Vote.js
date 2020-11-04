@@ -73,7 +73,7 @@ const Vote = () => {
 									className='d-flex flex-column align-items-center justify-content-center vote-option'
 									onClick={() => handleVote(entry)}
 								>
-									<img src='https://theundefeated.com/wp-content/uploads/2016/07/gettyimages-56887299_master.jpg' alt='Tim Duncan' />
+									<img src={entry.imageURL} alt='Tim Duncan' />
 									<span>{entry.name}: {entry.seed} seed in {bracketEnums[entry.bracket]}</span>
 								</Col>
 							)
