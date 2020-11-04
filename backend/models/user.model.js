@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const brackets = require('../enums/brackets');
 
 const userSchema = new mongoose.Schema({
 	username: {
@@ -21,14 +22,24 @@ const userSchema = new mongoose.Schema({
 	role: {
 		type: String,
 		immutable: true
+	},
+	voting: {
+		currentSeed: {
+			type: [Number],
+			default: [1, 16],
+			validate(value) {
+				if (value.length !== 2) {
+					throw new Error('Your seed data has been corrupted');
+				}
+			}
+		},
+		bracket: {
+			type: String,
+			default: brackets[0],
+			enum: brackets
+		}
 	}
 });
-
-// hash user password before saving into database
-// userSchema.pre('save', function (next) {
-// 	this.password = bcrypt.hashSync(this.password, 8);
-// 	next();
-// });
 
 const User = mongoose.model('User', userSchema);
 

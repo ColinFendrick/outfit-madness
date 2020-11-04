@@ -12,6 +12,9 @@ const getAllEntries = async (req, res) => {
 const getEntry = async (req, res) => {
 	try {
 		const entry = await Entry.findById(req.params.id);
+
+		if (!entry) return res.status(404).send({ message: 'Cannot find entry ' });
+
 		res.send(entry);
 	} catch (e) {
 		res.status(500).send(e);
@@ -23,6 +26,9 @@ const editEntry = async (req, res) => {
 		const entry = await Entry.findByIdAndUpdate(
 			req.params.id, req.body, { useFindAndModify: false }
 		);
+
+		if (!entry) return res.status(404).send({ message: 'Cannot find entry ' });
+
 		res.send({ message: `Entry ${entry.id} was updated successfully.` });
 	} catch (e) {
 		res.status(404).send(e);
@@ -45,6 +51,7 @@ const deleteEntry = async (req, res) => {
 		const entry = await Entry.findOneAndDelete({
 			_id: req.params.id
 		});
+
 		if (!entry) res.status(404).send({ message: 'Entry not found' });
 
 		res.send(entry);

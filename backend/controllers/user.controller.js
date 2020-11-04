@@ -5,6 +5,19 @@ const User = require('../models/user.model');
 
 const admin = require('../.admin');
 
+const sendUserAndToken = user => (req, res) => {
+	const accessToken = jwt.sign({ id: user._id }, req.app.get('secretKey'), { expiresIn: 86400 });
+
+	res.send({
+		id: user._id,
+		username: user.username,
+		email: user.email,
+		role: user.role,
+		voting: user.voting,
+		accessToken
+	});
+};
+
 const createUser = async (req, res, next) => {
 	const role = admin.adminUsers.includes(req.body.email) ? 'admin' : 'user';
 	try {
@@ -45,16 +58,42 @@ const authenticateUser = async (req, res) => {
 			});
 		}
 
-		const accessToken = jwt.sign({ id: user._id }, req.app.get('secretKey'), { expiresIn: 86400 });
+		sendUserAndToken(user)(req, res);
+	} catch (e) {
+		res.status(400).send(e);
+	}
+};
 
-		res.send({
-			id: user._id,
-			username: user.username,
-			email: user.email,
-			role: user.role,
-			accessToken
-		});
+const getUser = async (req, res) => {
+	try {
+		const user = await User.findById(req.params.id);
 
+		if (!user) return res.status(404).send({ message: `Cannot find user ${req.params.id}` });
+
+		sendUserAndToken(user)(req, res);
+	} catch (e) {
+		res.status(400).send(e);
+	}
+};
+
+const updateUser = async (req, res) => {
+	let body = {};
+	try {
+		if (req.body.password) {
+			body['password'] = bcrypt.hashSync(req.body.password, 8);
+		}
+		body = {
+			...req.body,
+			...body
+		};
+
+		const user = await User.findByIdAndUpdate(
+			req.params.id, body, { new: true }
+		);
+
+		if (!user) return res.status(404).send({ message: `Cannot find user ${user.name}` });
+		console.log(user);
+		sendUserAndToken(user)(req, res);
 	} catch (e) {
 		res.status(400).send(e);
 	}
@@ -64,12 +103,12 @@ const authenticateUser = async (req, res) => {
 const getAllUsers = async (req, res) => {
 	try {
 		const users = await User.find();
-		// .select({
-		// 	'username': 1, 'email': 1, password: 0, '_id': 1
-		// });
+
+		if (!users || !users.length) return res.status(404).send({ message: 'No users found' });
+
 		res.send(users);
 	} catch (e) {
-		res.status(500).send(e);
+		res.status(400).send(e);
 	}
 };
 
@@ -79,7 +118,7 @@ const deleteUser = async (req, res) => {
 			_id : req.params.id
 		});
 
-		if (!user) res.status(404).send({ message: `Cannot find user ${req.params.id}` });
+		if (!user) return res.status(404).send({ message: `Cannot find user ${req.params.id}` });
 
 		res.send(user);
 	} catch (e) {
@@ -98,6 +137,8 @@ const deleteAllUsers = async (req, res) => {
 module.exports = {
 	createUser,
 	authenticateUser,
+	getUser,
+	updateUser,
 
 	// admin:
 	getAllUsers,
