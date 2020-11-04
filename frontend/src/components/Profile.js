@@ -5,7 +5,7 @@ import { EditUserModal } from './modals';
 
 
 const Profile = () => {
-	const { currentUser, getAndSetUser } = useUserContext();
+	const { currentUser, getAndSetUser, logOut } = useUserContext();
 	const { toggleModal } = useLocalContext();
 	const [error] = useState('');
 
@@ -34,6 +34,11 @@ const Profile = () => {
 						onClick={() => toggleModal(<EditUserModal user={currentUser} />)()}
 					>
             Edit
+					</button>
+					<br />
+					<br />
+					<button className='btn btn-danger' onClick={logOut}>
+            Logout
 					</button>
 				</div>
 			)}

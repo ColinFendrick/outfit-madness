@@ -27,7 +27,7 @@ const App = () => {
 					<a href='/vote' className='navbar-brand'>
 						Vote on the Outfits
 					</a>
-					<div className='navbar-nav mr-auto'>
+					<div className='navbar-nav w-100'>
 						{currentUser ? (
 							<>
 
@@ -44,7 +44,7 @@ const App = () => {
 								</li>
 
 								<button
-									className='btn btn-outline-secondary'
+									className='btn btn-outline-secondary ml-auto align-self-center'
 									type='button'
 									onClick={logOut}
 								>Log out</button>

@@ -15,14 +15,14 @@
 }
 
 .vote-option > img {
-  width: 40vw;
-  height: 70vh;
+  width: 50%;
+  height: 70%;
   transition: width 0.2s, height 0.2s, boxshadow 0.1s;
 }
 
 .vote-option:hover > img{
-  width: 41vw;
-  height: 71vh;
+  width: 55%;
+  height: 75%;
   box-shadow: 0 3px 30px #dddddd4d;
 }
 
