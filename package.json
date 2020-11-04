@@ -18,11 +18,13 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"cd backend && npm run server:prod\" \"npm run start\"",
+    "start:dev": "concurrently \"cd backend && npm run server:dev\" \"npm run start\"",
+    "start:test": "concurrently \"cd backend && npm run server:test\" \"npm run start\"", 
+    "start:local": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "startConcurrently": "concurrently \"cd backend && npm run server:prod\" \"npm run start\""
+    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [
