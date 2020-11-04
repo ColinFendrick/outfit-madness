@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { UserContext } from '../context/UserContext';
 import AuthService from '../services/AuthService';
-import bracketEnums from '../constants/brackets';
+import { brackets } from '../constants/brackets';
 
 const useUserContext = () => {
 	const [{ currentUser, headersReady }, setCurrentUser] = useContext(UserContext);
@@ -78,13 +78,13 @@ const useUserContext = () => {
 					currentSeed: [currentSeed[0] + 1, currentSeed[1] - 1]
 				}
 			});
-		} else if (bracket !== bracketEnums[3]) {
-			const currentBracketIx = bracketEnums.findIndex(el => el === bracket);
+		} else if (bracket !== brackets[3]) {
+			const currentBracketIx = brackets.findIndex(el => el === bracket);
 			handleVote({
 				_id: id,
 				voting:{
 					currentSeed: [1, 16],
-					bracket: bracketEnums[currentBracketIx + 1]
+					bracket: brackets[currentBracketIx + 1]
 				}
 			});
 		} else {
@@ -92,7 +92,7 @@ const useUserContext = () => {
 				_id: id,
 				voting: {
 					currentSeed: [],
-					bracket: bracketEnums.slice(-1)[0]
+					bracket: brackets.slice(-1)[0]
 				}
 			});
 		}

@@ -92,7 +92,7 @@ const updateUser = async (req, res) => {
 		);
 
 		if (!user) return res.status(404).send({ message: `Cannot find user ${user.name}` });
-		console.log(user);
+
 		sendUserAndToken(user)(req, res);
 	} catch (e) {
 		res.status(400).send(e);

@@ -3,6 +3,7 @@ import { Container, Col } from 'reactstrap';
 
 import useEntryContext from '../hooks/useEntryContext';
 import useUserContext from '../hooks/useUserContext';
+import { bracketEnums } from '../constants/brackets';
 
 const Vote = () => {
 	const {
@@ -51,30 +52,35 @@ const Vote = () => {
 	};
 
 	return (
-		<Container className='d-flex'>
+		<Container className='d-flex flex-column'>
 			{state.error ? (
 				<div>
 					<h2>{state.error}</h2>
 				</div>
 			) : (
 				<>
+
 					<div>
 						<h3>
-							Current Position: {currentUser?.voting.bracket}: {currentUser?.voting.currentSeed[0]} vs {currentUser?.voting.currentSeed[1]}
+							Current Position: {currentUser?.voting.bracket && bracketEnums[currentUser.voting.bracket]}: {currentUser?.voting.currentSeed[0]} vs {currentUser?.voting.currentSeed[1]}
 						</h3>
 					</div>
-					{findCurrentPair().map(entry => (
-						entry && (
-							<Col
-								key={entry._id}
-								className='d-flex flex-column align-items-center justify-content-center vote-option'
-								onClick={() => handleVote(entry)}
-							>
-								<img src='https://theundefeated.com/wp-content/uploads/2016/07/gettyimages-56887299_master.jpg' alt='Tim Duncan' />
-								<span>{entry.name} - {entry.bracket}: {entry.seed}</span>
-							</Col>
-						)
-					))}
+
+					<div className='d-flex'>
+						{findCurrentPair().map(entry => (
+							entry && (
+								<Col
+									key={entry._id}
+									className='d-flex flex-column align-items-center justify-content-center vote-option'
+									onClick={() => handleVote(entry)}
+								>
+									<img src='https://theundefeated.com/wp-content/uploads/2016/07/gettyimages-56887299_master.jpg' alt='Tim Duncan' />
+									<span>{entry.name}: {entry.seed} in {bracketEnums[entry.bracket]}</span>
+								</Col>
+							)
+						))}
+					</div>
+
 				</>
 			)}
 		</Container>

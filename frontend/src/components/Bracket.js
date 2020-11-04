@@ -7,6 +7,7 @@ import useEntryContext from '../hooks/useEntryContext';
 import useLocalContext from '../hooks/useLocalContext';
 import useUserContext from '../hooks/useUserContext';
 import { EditEntryModal } from './modals';
+import { bracketEnums } from '../constants/brackets';
 
 const Bracket = () => {
 	const {
@@ -16,7 +17,7 @@ const Bracket = () => {
 		deleteEntry,
 		deleteAll
 	} = useEntryContext();
-	const { headersReady, checkHeadersBefore } = useUserContext();
+	const { headersReady, checkHeadersBefore, currentUser } = useUserContext();
 	const { toggleModal } = useLocalContext();
 	const [sort, setSort] = useState({ field: null, dir: true });
 	const [error, setError] = useState('');
@@ -54,7 +55,7 @@ const Bracket = () => {
 
 	const headers = fields.map((field, ix) => (
 		<th onClick={() => updateSort(field)} key={`${field}-header-${ix}`}>
-			{field}{' '}
+			{`${field.charAt(0).toUpperCase()}${field.slice(1)}`}{' '}
 			<FontAwesomeIcon
 				icon={sort.field === field && !sort.dir ? faCaretDown : faCaretUp} style={{ color: sort.field === field ? '#ddd' : '#dddddd4d' }}
 			/>
@@ -64,11 +65,13 @@ const Bracket = () => {
 	const rows = entry => fields.map(field => (
 		<td
 			key={`${field}-${entry[field]}-${entry._id}`}
-			onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}
+			onClick={() => isAdmin ? toggleModal(<EditEntryModal entry={entry} reload={reload} />)() : {}}
 		>
-			{entry[field]}
+			{field === 'bracket' ? bracketEnums[entry[field]] : entry[field]}
 		</td>
 	));
+
+	const isAdmin = currentUser?.role === 'admin';
 
 	return (
 		<div>
@@ -83,44 +86,54 @@ const Bracket = () => {
 						<thead>
 							<tr>
 								{headers}
-								<th>
-									<button
-										className='btn btn-danger'
-										onClick={checkHeadersBefore({ method: deleteAll, errorMethod: setError, cb: reload })}
-									>
+
+								{isAdmin && (
+									<th>
+										<button
+											className='btn btn-danger'
+											onClick={checkHeadersBefore({ method: deleteAll, errorMethod: setError, cb: reload })}
+										>
 										Delete All Entries
-									</button>
-								</th>
+										</button>
+									</th>
+								)}
+
 							</tr>
 						</thead>
 						<tbody>
 							{entries && entries.sort(sortFunc).map(entry => (
 								<tr key={entry._id}>
 									{rows(entry)}
-									<td>
-										<button className='btn btn-warning'
-											onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}
-										>
+
+									{isAdmin && (
+										<td>
+											<button className='btn btn-warning'
+												onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}
+											>
 											Edit
-										</button>
-										<button className='btn btn-danger'
-											onClick={() => checkHeadersBefore({
-												method: deleteEntry, errorMethod: setError, cb: reload
-											})(entry)}
-										>
+											</button>
+											<button className='btn btn-danger'
+												onClick={() => checkHeadersBefore({
+													method: deleteEntry, errorMethod: setError, cb: reload
+												})(entry)}
+											>
 											Delete
-										</button>
-									</td>
+											</button>
+										</td>
+									)}
+
 								</tr>
 							))}
 						</tbody>
 					</Table>
 
-					<section>
-						<button className='btn btn-success' onClick={() => toggleModal(<EditEntryModal reload={reload} />)()}>
-					Add Entry
-						</button>
-					</section>
+					{isAdmin && (
+						<section>
+							<button className='btn btn-success' onClick={() => toggleModal(<EditEntryModal reload={reload} />)()}>
+							Add Entry
+							</button>
+						</section>
+					)}
 				</>
 			)}
 		</div>

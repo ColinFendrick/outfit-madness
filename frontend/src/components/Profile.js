@@ -23,7 +23,13 @@ const Profile = () => {
 				</div>
 			) : (
 				<div>
-					{currentUser?.username}
+					<h4>Username:</h4>
+					<div>{currentUser?.username}</div>
+					<br />
+
+					<h4>Email:</h4>
+					<div>{currentUser?.email}</div>
+					<br />
 
 					<button className='btn btn-warning'
 						onClick={() => toggleModal(<EditUserModal user={currentUser} />)()}
