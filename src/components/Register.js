@@ -100,6 +100,12 @@ const Register = ({ history }) => {
 									type='submit'
 									className='btn btn-primary btn-block'>Sign Up</button>
 							</div>
+
+							<div>
+								<small>
+									<Link to={'/login'} className='unstyled-link'>Already registered? Click here to log in.</Link>
+								</small>
+							</div>
 						</div>
 					)}
 

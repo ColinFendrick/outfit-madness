@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import AuthService from '../services/AuthService';
 import { emailRegex } from '../constants/regex';
+import { useUserContext } from '../hooks';
 
 const Login = ({ history }) => {
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState('');
+	const { currentUser } = useUserContext();
 	const { register, handleSubmit, errors, setError } = useForm({
 		username: '', email: '', password: ''
 	});
+
+	useEffect(() => {
+		if (currentUser?.accessToken) {
+			history.push('/vote');
+			window.location.reload();
+		}
+	}, [currentUser, history]);
+
 
 	const handleLogin = async data => {
 
@@ -100,11 +111,16 @@ const Login = ({ history }) => {
 						</button>
 					</div>
 
+
+					<div>
+						<small>
+							<Link to={'/register'} className='unstyled-link'>Not registed? Click here to register</Link>
+						</small>
+					</div>
+
 					{message && (
-						<div className='form-group'>
-							<div className='alert alert-danger' role='alert'>
-								{message}
-							</div>
+						<div className='alert alert-danger' role='alert'>
+							{message}
 						</div>
 					)}
 

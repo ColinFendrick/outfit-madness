@@ -30,3 +30,14 @@
   max-width: 300px;
   margin: auto;
 }
+
+.unstyled-link {
+  color: #ddd;
+  text-decoration: none;
+}
+
+.unstyled-link:hover,
+.unstyled-link:focus {
+  color: #007bff;
+  text-decoration: none;
+}

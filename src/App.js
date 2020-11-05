@@ -72,7 +72,7 @@ const App = () => {
 
 				<div className='container mt-3'>
 					<Switch>
-						<Route exact path='/register' component={Register} />
+						<Route path='/register' component={Register} />
 						<Route path='/bracket' component={Bracket} />
 						<Route path='/profile' component={Profile} />
 						<Route path='/vote' component={Vote} />
