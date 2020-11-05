@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import AuthService from '../services/AuthService';
 import { emailRegex } from '../constants/regex';
 
-const Login = props => {
+const Login = ({ history }) => {
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState('');
 	const { register, handleSubmit, errors, setError } = useForm({
@@ -32,7 +32,7 @@ const Login = props => {
 				setMessage(res.data.message);
 				return;
 			} else {
-				props.history.push('/vote');
+				history.push('/vote');
 				window.location.reload();
 			}
 		} catch (e) {
@@ -45,7 +45,7 @@ const Login = props => {
 	return (
 		<div className='col-md-12'>
 			<div className='card card-container'>
-
+				<h2>Login:</h2>
 				<form onSubmit={handleSubmit(handleLogin)}>
 
 					<div className='form-group'>

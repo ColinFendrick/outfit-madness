@@ -1,6 +1,10 @@
 # Getting started
 
-## Concurrently <-- This is probably what you want
+## Run the Remote
+
+Just head over to [the remote link](https://outfit-voting.herokuapp.com/).
+
+## Concurrently
 
 To run both projects, make sure you have `npm i` in both root and `backend/`, then use `npm run start`. It will be running on `localhost:3000`.
 

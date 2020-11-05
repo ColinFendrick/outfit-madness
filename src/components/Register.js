@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import AuthService from '../services/AuthService';
 import { emailRegex } from '../constants/regex';
 
-const Register = () => {
+const Register = ({ history }) => {
 	const [successful, setSuccessful] = useState(false);
 	const [message, setMessage] = useState('');
 	const { register, handleSubmit, errors } = useForm({
@@ -19,6 +20,28 @@ const Register = () => {
 			const res = await AuthService.register(data);
 			setMessage(res.data.message);
 			setSuccessful(true);
+
+			const user = res.data.user;
+			setTimeout(async () => {
+				if (!user.username || !user.email) {
+					setMessage('Username or email data is corrupted. Try logging in below with your credentials.');
+					setSuccessful(false);
+				}
+
+				try {
+					const login = await AuthService.login(user);
+					if ([400, 401, 404].includes(login.status)) {
+						setMessage('Invalid username or information supplied. Try logging in below with your credentials.');
+						setSuccessful(false);
+					}
+
+					history.push('/vote');
+					window.location.reload();
+				} catch (e) {
+					setMessage('Could not log in automatically. Try logging in below with your credentials.');
+					setSuccessful(false);
+				}
+			}, 2500);
 		} catch (e) {
 			setMessage(e.message || 'Something went wrong!');
 			setSuccessful(false);
@@ -28,7 +51,7 @@ const Register = () => {
 	return (
 		<div className='col-md-12'>
 			<div className='card card-container'>
-
+				<h2>Register:</h2>
 				<form onSubmit={handleSubmit(handleRegister)}>
 					{!successful && (
 						<div>
@@ -83,11 +106,16 @@ const Register = () => {
 					{message && (
 						<div className='form-group'>
 							<div
-								className={ successful ? 'alert alert-success' : 'alert alert-danger' }
+								className={successful ? 'alert alert-success' : 'alert alert-danger'}
 								role='alert'
 							>
 								{message}
 							</div>
+
+							{successful && <Link to={'/login'}>
+								Login
+							</Link>
+							}
 						</div>
 					)}
 				</form>

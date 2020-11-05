@@ -47,7 +47,9 @@ const App = () => {
 									className='btn btn-outline-secondary ml-auto align-self-center'
 									type='button'
 									onClick={logOut}
-								>Log out</button>
+								>
+									Log out
+								</button>
 
 							</>
 						) : (

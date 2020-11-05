@@ -27,8 +27,14 @@ const createUser = async (req, res, next) => {
 			password: bcrypt.hashSync(req.body.password, 8),
 			role
 		});
+
 		await user.save();
-		res.status(200).send({ message: `User ${user.username} created` });
+		res.status(200).send({
+			message: `User ${user.username} created`,
+			user: {
+				username: user.username, email: user.email, password: req.body.password
+			}
+		});
 	} catch (e) {
 		res.status(500).send({ message: e.message });
 	}
