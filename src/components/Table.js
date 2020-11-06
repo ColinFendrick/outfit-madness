@@ -1,21 +1,63 @@
+import { useState } from 'react';
 import { Table as TableRS } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
-import { useUserContext } from '../hooks';
+import { useUserContext, useEntryContext, useLocalContext } from '../hooks';
 import { EditEntryModal } from './modals';
+import { bracketEnums } from '../constants/brackets';
 
 const Table = ({
-	headers,
-	isAdmin,
 	deleteEntries,
 	setError,
-	sortFunc,
 	entries,
-	toggleModal,
-	deleteEntry,
-	reload,
-	rows
+	reload
 }) => {
-	const { checkHeadersBefore } = useUserContext();
+	const { deleteEntry } = useEntryContext();
+	const { toggleModal } = useLocalContext();
+	const { currentUser, checkHeadersBefore } = useUserContext();
+	const [sort, setSort] = useState({ field: null, dir: true });
+
+	const sortFunc = (a, b) => {
+		if (!sort.field) return 0;
+
+		if (sort.dir) {
+			if (a[sort.field] > b[sort.field]) return 1;
+			else return -1;
+		} else {
+			if (a[sort.field] > b[sort.field]) return -1;
+			else return 1;
+		}
+	};
+
+	const updateSort = field =>
+		setSort({
+			field,
+			dir: sort.field === field ? !sort.dir : true
+		});
+
+	const isAdmin = currentUser?.role === 'admin';
+
+	const fields = ['name', 'seed', 'bracket', 'votes'];
+
+	const headers = fields.map((field, ix) => (
+		<th onClick={() => updateSort(field)} key={`${field}-header-${ix}`}>
+			{`${field.charAt(0).toUpperCase()}${field.slice(1)}`}{' '}
+			<FontAwesomeIcon
+				icon={sort.field === field && !sort.dir ? faCaretDown : faCaretUp} style={{ color: sort.field === field ? '#ddd' : '#dddddd4d' }}
+			/>
+		</th>
+	));
+
+
+	const rows = entry => fields.map(field => (
+		<td
+			key={`${field}-${entry[field]}-${entry._id}`}
+			onClick={() => isAdmin ? toggleModal(<EditEntryModal entry={entry} reload={reload} />)() : {}}
+		>
+			{field === 'bracket' ? bracketEnums[entry[field]] : entry[field]}
+		</td>
+	));
 
 	return (
 		<TableRS dark striped hover className='sortable'>
@@ -29,7 +71,7 @@ const Table = ({
 								className='btn btn-danger'
 								onClick={checkHeadersBefore({ method: deleteEntries, errorMethod: setError, cb: reload })}
 							>
-								Delete All Entries
+								Delete All Entries in Table
 							</button>
 						</th>
 					)}
