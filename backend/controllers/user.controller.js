@@ -18,7 +18,7 @@ const sendUserAndToken = user => (req, res) => {
 	});
 };
 
-const createUser = async (req, res, next) => {
+const createUser = async (req, res) => {
 	const role = admin.adminUsers.includes(req.body.email) ? 'admin' : 'user';
 	try {
 		const user = await User.create({

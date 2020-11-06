@@ -69,6 +69,15 @@ const deleteAllEntries = async (req, res) => {
 	}
 };
 
+const deleteBracket = async (req, res) => {
+	try {
+		await Entry.deleteMany({ bracket: req.params.bracket });
+		res.send({ message: `Delete all entries under ${req.params.bracket} ` });
+	} catch (e) {
+		res.status(500).send(e);
+	}
+};
+
 module.exports = {
 	getAllEntries,
 	getEntry,
@@ -77,5 +86,6 @@ module.exports = {
 	// admin:
 	createEntry,
 	deleteEntry,
-	deleteAllEntries
+	deleteAllEntries,
+	deleteBracket
 };

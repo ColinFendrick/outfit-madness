@@ -54,13 +54,22 @@ const useEntryContext = () => {
 		}
 	};
 
-	const deleteAll = async () => {
+	const deleteAllEntries = async () => {
 		try {
 			await EntryService.deleteAllEntries();
 		} catch (e) {
 			throw new Error(e);
 		}
 	};
+
+	const deleteBracket = async bracket => {
+		try {
+			await EntryService.deleteBracket(bracket);
+		} catch (e) {
+			throw new Error(e);
+		}
+	};
+
 	return {
 		entries: context.entries,
 		setEntries,
@@ -69,7 +78,8 @@ const useEntryContext = () => {
 		addEntry,
 		editEntry,
 		deleteEntry,
-		deleteAll
+		deleteAllEntries,
+		deleteBracket
 	};
 };
 

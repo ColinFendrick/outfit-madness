@@ -18,4 +18,6 @@ router.delete('/admin/entries/:id', [verifyToken, confirmAdmin], entries.deleteE
 
 router.delete('/admin/entries', [verifyToken, confirmAdmin], entries.deleteAllEntries);
 
+router.delete('/admin/entries/bracket/:bracket', [verifyToken, confirmAdmin], entries.deleteBracket);
+
 module.exports = router;

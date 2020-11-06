@@ -14,6 +14,8 @@ const deleteEntry = data => http.delete(`/admin/entries/${data._id}`);
 
 const deleteAllEntries = () => http.delete('/admin/entries');
 
+const deleteBracket = bracket => http.delete(`/admin/entries/bracket/${bracket}`);
+
 const service = {
 	healthCheck,
 	getAll,
@@ -23,7 +25,8 @@ const service = {
 	// admin:
 	add,
 	deleteEntry,
-	deleteAllEntries
+	deleteAllEntries,
+	deleteBracket
 };
 
 export default service;
