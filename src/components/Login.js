@@ -54,7 +54,7 @@ const Login = ({ history }) => {
 	};
 
 	return (
-		<div className='col-md-12'>
+		<div className='col-md-8'>
 			<div className='card card-container'>
 				<h2>Login:</h2>
 				<form onSubmit={handleSubmit(handleLogin)}>

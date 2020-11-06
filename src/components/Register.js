@@ -49,7 +49,7 @@ const Register = ({ history }) => {
 	};
 
 	return (
-		<div className='col-md-12'>
+		<div className='col-md-8'>
 			<div className='card card-container'>
 				<h2>Register:</h2>
 				<form onSubmit={handleSubmit(handleRegister)}>
