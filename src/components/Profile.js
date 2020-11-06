@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { useUserContext, useLocalContext } from '../hooks';
 import { EditUserModal } from './modals';
-
+import { bracketEnums } from '../constants/brackets';
 
 const Profile = () => {
 	const { currentUser, getAndSetUser, logOut } = useUserContext();
@@ -30,6 +30,14 @@ const Profile = () => {
 					<div>{currentUser?.email}</div>
 					<br />
 
+					{currentUser?.role === 'admin' && (
+						<>
+							<h4>Current Voting Position</h4>
+							<div>Matchup: {currentUser.voting.currentSeed[0]} vs. {currentUser.voting.currentSeed[1]}</div>
+							<div>Bracket: {bracketEnums[currentUser.voting.bracket]}</div>
+							<br />
+						</>
+					)}
 					<button className='btn btn-warning'
 						onClick={() => toggleModal(<EditUserModal user={currentUser} />)()}
 					>
