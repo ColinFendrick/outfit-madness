@@ -21,7 +21,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "concurrently \"cd backend && npm run server:prod\" \"npm run start\"",
+    "start": "react-scripts start",
     "start:dev": "concurrently \"cd backend && npm run server:dev\" \"npm run start\"",
     "start:test": "concurrently \"cd backend && npm run server:test\" \"npm run start\"",
     "start:local": "react-scripts start",
