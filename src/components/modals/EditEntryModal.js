@@ -44,7 +44,7 @@ const EditEntryModal = ({ entry = defaultValues, reload }) => {
 				<ModalBody>
 					<div>
 						<h2>{state.error}</h2>
-						<button className='btn btn-success' onClick={clearForm}>
+						<button className='btn btn-success' type='button' onClick={clearForm}>
 							Try Again
 						</button>
 					</div>
@@ -146,7 +146,7 @@ const EditEntryModal = ({ entry = defaultValues, reload }) => {
 							Save
 						</button>
 
-						<button className='btn btn-warning' onClick={clearForm}>
+						<button className='btn btn-warning' type='button' onClick={clearForm}>
 							Clear
 						</button>
 					</ModalFooter>

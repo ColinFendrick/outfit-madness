@@ -52,7 +52,7 @@ const EditUserModal = ({ user }) => {
 				<ModalBody>
 					<div>
 						<h2>{state.error}</h2>
-						<button className='btn btn-success' onClick={resetForm}>
+						<button className='btn btn-success' type='button' onClick={resetForm}>
 							Try Again
 						</button>
 					</div>
