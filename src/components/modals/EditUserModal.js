@@ -32,6 +32,9 @@ const EditUserModal = ({ user }) => {
 			updatedData.voting.currentSeed = data.voting.currentSeed.split(' ').map(str => parseInt(str));
 		}
 
+		if (data.username) updatedData.username = data.username.toLowerCase();
+		if (data.email) updatedData.email = data.email.toLowerCase();
+
 		checkHeadersBefore({
 			method: updateCurrentUser,
 			errorMethod: error => setState({ ...state, error }),

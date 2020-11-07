@@ -23,7 +23,6 @@ const Login = ({ history }) => {
 
 
 	const handleLogin = async data => {
-
 		if (!data.username && !data.email) {
 			setError('username', {
 				type: 'bothEmpty', message: 'Either Username or Email is required'
@@ -97,6 +96,7 @@ const Login = ({ history }) => {
 							id='password'
 							ref={register({ required: true, min: 8 })}
 							defaultValue=''
+							autoComplete='current-password'
 							name='password' />
 						{errors.password?.type === 'required' && 'Your input is required'}
 						{errors.multipleErrorInput?.type === 'min' && 'Must be at least 8 characters'}

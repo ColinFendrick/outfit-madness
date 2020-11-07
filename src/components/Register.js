@@ -95,6 +95,7 @@ const Register = ({ history }) => {
 									className='form-control'
 									name='password'
 									id='password'
+									autoComplete='current-password'
 									ref={register({ required: true, min: 8 })}
 								/>
 								{errors.password?.type === 'required' && 'Your input is required'}

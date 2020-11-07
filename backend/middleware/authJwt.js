@@ -36,7 +36,7 @@ const isTokenSameAsTarget = async (req, res, next) => {
 		next();
 	} catch (e) {
 		res.status(500).send({
-			message: 'Error occured in updating user votes. Please reload and try again.'
+			message: 'Cannot find a user with this id. Please try logging out and in again.'
 		});
 	}
 };
