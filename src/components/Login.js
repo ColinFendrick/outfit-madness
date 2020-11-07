@@ -35,8 +35,11 @@ const Login = ({ history }) => {
 		}
 		setMessage('');
 		setLoading(true);
-
+		if (data.username) data.username = data.username.toLowerCase();
+		if (data.email) data.email = data.email.toLowerCase();
 		try {
+
+			// if (data.email) data.email = data.email.toLowerCase();
 			const res = await AuthService.login(data);
 			if ([400, 401, 404].includes(res.status)) {
 				setLoading(false);
@@ -67,7 +70,8 @@ const Login = ({ history }) => {
 							id='username'
 							ref={register()}
 							defaultValue=''
-							name='username' />
+							name='username'
+						/>
 						{errors.username?.type && errors.username?.message}
 					</div>
 

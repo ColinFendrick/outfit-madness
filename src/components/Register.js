@@ -16,6 +16,12 @@ const Register = ({ history }) => {
 		setMessage('');
 		setSuccessful(false);
 
+		data = {
+			...data,
+			username: data.username.toLowerCase(),
+			email: data.email.toLowerCase()
+		};
+
 		try {
 			const res = await AuthService.register(data);
 			setMessage(res.data.message);

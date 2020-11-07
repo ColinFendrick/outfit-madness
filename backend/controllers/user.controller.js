@@ -22,8 +22,8 @@ const createUser = async (req, res) => {
 	const role = admin.adminUsers.includes(req.body.email) ? 'admin' : 'user';
 	try {
 		const user = await User.create({
-			username: req.body.username,
-			email: req.body.email,
+			username: req.body.username.toLowerCase(),
+			email: req.body.email.toLowerCase(),
 			password: bcrypt.hashSync(req.body.password, 8),
 			role
 		});
@@ -43,8 +43,8 @@ const createUser = async (req, res) => {
 const authenticateUser = async (req, res) => {
 	try {
 		const user = req.body.username ?
-			await User.findOne({ username: req.body.username }) :
-			await User.findOne({ email: req.body.email });
+			await User.findOne({ username: req.body.username.toLowerCase() }) :
+			await User.findOne({ email: req.body.email.toLowerCase() });
 
 		if (!user) {
 			return res.status(404).send({
