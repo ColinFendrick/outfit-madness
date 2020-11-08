@@ -85,9 +85,11 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
 	let body = {};
 	try {
-		if (req.body.password) {
-			body['password'] = bcrypt.hashSync(req.body.password, 8);
+		if (req.body.newPassword) {
+			body['password'] = bcrypt.hashSync(req.body.newPassword, 8);
+			delete req.body['newPassword'];
 		}
+		delete req.body['oldPassword']; // Removes the old password field
 		body = {
 			...req.body,
 			...body

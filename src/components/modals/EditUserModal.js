@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
@@ -7,7 +8,7 @@ import {
 } from 'reactstrap';
 
 import { useUserContext, useLocalContext } from '../../hooks';
-import { emailRegex } from '../../constants/regex';
+
 import { brackets, bracketEnums } from '../../constants/brackets';
 
 const EditUserModal = ({ user }) => {
@@ -16,10 +17,11 @@ const EditUserModal = ({ user }) => {
 		currentUser,
 		checkHeadersBefore,
 		setCurrentUser,
-		updateCurrentUser
+		updateCurrentUser,
+		logOut
 	} = useUserContext();
 	const [state, setState] = useState({ submitted: false, error: '' });
-	const { register, handleSubmit, errors, reset } = useForm(user);
+	const { register, handleSubmit, errors, setError, reset } = useForm(user);
 
 	const resetForm = () => {
 		reset({ user });
@@ -27,21 +29,30 @@ const EditUserModal = ({ user }) => {
 	};
 
 	const onSubmit = async data => {
+		if (data.newPassword && data.newPassword !== document.getElementById('validateNewPassword').value) {
+			return setError('newPassword', {
+				type: 'mismatch', message: 'New Passwords do not match'
+			});
+		}
 		const updatedData = { ...data };
 		if (data?.voting?.currentSeed) { // TODO:  I don't love this...
 			updatedData.voting.currentSeed = data.voting.currentSeed.split(' ').map(str => parseInt(str));
 		}
 
 		if (data.username) updatedData.username = data.username.toLowerCase();
-		if (data.email) updatedData.email = data.email.toLowerCase();
 
 		checkHeadersBefore({
 			method: updateCurrentUser,
 			errorMethod: error => setState({ ...state, error }),
 			cb: user => {
-				setCurrentUser(user);
-				localStorage.setItem('user', JSON.stringify(user));
-				toggleModal()();
+				if (data.newPassword !== '') {
+					return logOut();
+				} else {
+					setCurrentUser(user);
+					localStorage.setItem('user', JSON.stringify(user));
+					toggleModal()();
+				}
+
 			}
 		})({ ...updatedData, _id: currentUser.id });
 	};
@@ -74,22 +85,44 @@ const EditUserModal = ({ user }) => {
 								ref={register({ required: true })}
 								defaultValue={user['username']}
 								name='username'
+								autoComplete='username'
 							/>
 							{errors.username && 'Username cannot be blank'}
 							<br />
 
-							<label htmlFor='email'>Email</label>
+							<label htmlFor='oldPassword'>Old Password</label>
 							<input
-								type='text'
+								type='password'
 								className='form-control'
-								id='email'
+								id='oldPassword'
 								required
-								defaultValue={user['email']}
-								name='email'
-								ref={register({ required: true, pattern: emailRegex })}
+								ref={register({ required: true })}
+								name='oldPassword'
+								autoComplete='new-password'
 							/>
-							{errors.email?.type === 'required' && 'Email is required'}
-							{errors.email?.type === 'pattern' && 'Has to be a valid email'}
+							{errors.oldPassword && 'Please input your old password'}
+							<br />
+
+							<label htmlFor='newPassword'>New Password</label>
+							<input
+								type='password'
+								className='form-control'
+								id='newPassword'
+								ref={register()}
+								name='newPassword'
+								autoComplete='new-password'
+							/>
+							{errors.newPassword && errors.newPassword.message}
+							<br />
+
+							<label htmlFor='validateNewPassword'>Please Re-Enter Password</label>
+							<input
+								type='password'
+								className='form-control'
+								id='validateNewPassword'
+								name='validateNewPassword'
+								autoComplete='new-password'
+							/>
 							<br />
 
 							{currentUser?.role === 'admin' && (
