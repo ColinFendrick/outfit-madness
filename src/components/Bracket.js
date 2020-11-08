@@ -62,13 +62,16 @@ const Bracket = () => {
 								reload={reload}
 								entries={entries.filter(entry => bracket === entry.bracket)}
 								deleteEntries={() => deleteBracket(bracket)}
+								isSegregated={true}
 								key={`${bracket}-table`}
+
 							/>
 						)) : (
 							<Table
 								setError={setError}
 								reload={reload}
 								entries={entries}
+								isSegregated={false}
 								deleteEntries={deleteAllEntries}
 							/>
 						)}

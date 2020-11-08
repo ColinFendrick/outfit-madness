@@ -11,7 +11,8 @@ const Table = ({
 	deleteEntries,
 	setError,
 	entries,
-	reload
+	reload,
+	isSegregated
 }) => {
 	const { deleteEntry } = useEntryContext();
 	const { toggleModal } = useLocalContext();
@@ -71,7 +72,7 @@ const Table = ({
 								className='btn btn-danger'
 								onClick={checkHeadersBefore({ method: deleteEntries, errorMethod: setError, cb: reload })}
 							>
-								Delete All Entries in Table
+								{isSegregated ? 'Delete All Entries in Table' : 'Delete All Entries'}
 							</button>
 						</th>
 					)}
@@ -88,14 +89,14 @@ const Table = ({
 								<button className='btn btn-warning'
 									onClick={() => toggleModal(<EditEntryModal entry={entry} reload={reload} />)()}
 								>
-											Edit
+									Edit
 								</button>
 								<button className='btn btn-danger'
 									onClick={() => checkHeadersBefore({
 										method: deleteEntry, errorMethod: setError, cb: reload
 									})(entry)}
 								>
-											Delete
+									Delete
 								</button>
 							</td>
 						)}
