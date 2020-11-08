@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useEntryContext, useUserContext, useLocalContext } from '../hooks';
 import { EditEntryModal } from './modals';
-import { brackets } from '../constants/brackets';
+import { brackets, excludedBrackets } from '../constants/brackets';
 import { Table } from '.';
 
 const Bracket = () => {
@@ -55,8 +55,17 @@ const Bracket = () => {
 						</div>
 					</div>
 
+					{isAdmin && (
+						<section>
+							<button className='btn btn-success' onClick={() => toggleModal(<EditEntryModal reload={reload} />)()}>
+								Add Entry
+							</button>
+						</section>
+					)}
+					<br/>
+
 					{inSeparateTables ?
-						brackets.map(bracket => (
+						brackets.filter(bracket => !excludedBrackets.includes(bracket)).map(bracket => (
 							<Table
 								setError={setError}
 								reload={reload}

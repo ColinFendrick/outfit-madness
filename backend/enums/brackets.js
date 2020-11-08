@@ -1,1 +1,8 @@
-module.exports = ['celebrities-2000', 'celebrities-contemporary', 'rap-rb-musicians', 'athletes', 'DONE_VOTING'];
+module.exports = [
+	'celebrities-2000',
+	'celebrities-contemporary',
+	'rap-rb-musicians',
+	'athletes',
+	'adam-sandler',
+	'DONE_VOTING'
+];

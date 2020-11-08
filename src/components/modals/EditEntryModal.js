@@ -136,6 +136,17 @@ const EditEntryModal = ({ entry = defaultValues, reload }) => {
 									/>
 									Athletes
 								</div>
+
+								<div className='form-check'>
+									<input
+										name='bracket'
+										type='radio'
+										value={brackets[4]}
+										ref={register({ required: true })}
+										defaultChecked={entry['bracket'] === brackets[4]}
+									/>
+									Adam Sandler
+								</div>
 							</section>
 
 						</div>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container, Col } from 'reactstrap';
 
 import { useEntryContext, useUserContext } from '../hooks';
-import { bracketEnums } from '../constants/brackets';
+import { brackets, bracketEnums } from '../constants/brackets';
 
 const Vote = () => {
 	const {
@@ -50,6 +50,12 @@ const Vote = () => {
 		return (first || second) ? [first, second] : [];
 	};
 
+	const headerText = (
+		currentUser?.voting.bracket === brackets[5] ?
+			'DONE VOTING' :
+			`Current Position: ${bracketEnums[currentUser?.voting.bracket]}: ${currentUser?.voting.currentSeed[0]} vs ${currentUser?.voting.currentSeed[1]}`
+	);
+
 	return (
 		<Container className='d-flex flex-column'>
 			{state.error ? (
@@ -61,7 +67,7 @@ const Vote = () => {
 
 					<div>
 						<h3>
-							Current Position: {currentUser?.voting.bracket && bracketEnums[currentUser.voting.bracket]}: {currentUser?.voting.currentSeed[0]} vs {currentUser?.voting.currentSeed[1]}
+							{headerText}
 						</h3>
 					</div>
 

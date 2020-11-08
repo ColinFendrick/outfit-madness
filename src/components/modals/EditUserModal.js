@@ -101,7 +101,7 @@ const EditUserModal = ({ user }) => {
 										<option value='3 14'>3 :: 14</option>
 										<option value='4 13'>4 :: 13</option>
 										<option value='5 12'>5 :: 12</option>
-										<option value='6 11'>6 :: 131</option>
+										<option value='6 11'>6 :: 11</option>
 										<option value='7 10'>7 :: 10</option>
 										<option value='8 9'>8 :: 9</option>
 									</select>
