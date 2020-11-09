@@ -8,7 +8,7 @@ import {
 } from 'reactstrap';
 
 import { useUserContext, useLocalContext } from '../../hooks';
-
+import { combineSeedsToArray, splitSeeds } from '../../helpers/currentSeedHelpers';
 import { brackets, bracketEnums } from '../../constants/brackets';
 
 const EditUserModal = ({ user }) => {
@@ -35,8 +35,8 @@ const EditUserModal = ({ user }) => {
 			});
 		}
 		const updatedData = { ...data };
-		if (data?.voting?.currentSeed) { // TODO:  I don't love this...
-			updatedData.voting.currentSeed = data.voting.currentSeed.split(' ').map(str => parseInt(str));
+		if (data?.voting?.currentSeed) {
+			updatedData.voting.currentSeed = combineSeedsToArray(data.voting.currentSeed);
 		}
 
 		if (data.username) updatedData.username = data.username.toLowerCase();
@@ -58,7 +58,6 @@ const EditUserModal = ({ user }) => {
 	};
 
 	const watchNewPassword = watch('newPassword');
-
 
 	return (
 		<>
@@ -135,7 +134,7 @@ const EditUserModal = ({ user }) => {
 							{currentUser?.role === 'admin' && (
 								<>
 									<label htmlFor='voting.currentSeed'>Current Seed</label>
-									<select name='voting.currentSeed' ref={register}>
+									<select name='voting.currentSeed' ref={register} defaultValue={splitSeeds(currentUser.voting.currentSeed)}>
 										<option value='1 16'>1 :: 16</option>
 										<option value='2 15'>2 :: 15</option>
 										<option value='3 14'>3 :: 14</option>
