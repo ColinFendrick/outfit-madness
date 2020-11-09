@@ -21,15 +21,15 @@ const EditUserModal = ({ user }) => {
 		logOut
 	} = useUserContext();
 	const [state, setState] = useState({ submitted: false, error: '' });
-	const { register, handleSubmit, errors, setError, reset } = useForm(user);
+	const { register, handleSubmit, errors, setError, reset, watch } = useForm(user);
 
 	const resetForm = () => {
 		reset({ user });
 		setState({ submitted: false, error: '' });
 	};
 
-	const onSubmit = async data => {
-		if (data.newPassword && data.newPassword !== document.getElementById('validateNewPassword').value) {
+	const onSubmit = async ({ validateNewPassword, ...data }) => {
+		if (data.newPassword !== validateNewPassword) {
 			return setError('newPassword', {
 				type: 'mismatch', message: 'New Passwords do not match'
 			});
@@ -56,6 +56,9 @@ const EditUserModal = ({ user }) => {
 			}
 		})({ ...updatedData, _id: currentUser.id });
 	};
+
+	const watchNewPassword = watch('newPassword');
+
 
 	return (
 		<>
@@ -115,13 +118,17 @@ const EditUserModal = ({ user }) => {
 							{errors.newPassword && errors.newPassword.message}
 							<br />
 
-							<label htmlFor='validateNewPassword'>Please Re-Enter Password</label>
+							<label htmlFor='validateNewPassword' className={`${!watchNewPassword ? 'disabled-label' : ''}`}>
+								Please Re-Enter New Password
+							</label>
 							<input
 								type='password'
 								className='form-control'
 								id='validateNewPassword'
 								name='validateNewPassword'
 								autoComplete='new-password'
+								disabled={!watchNewPassword}
+								ref={register()}
 							/>
 							<br />
 

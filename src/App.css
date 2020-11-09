@@ -41,3 +41,12 @@
   color: #007bff;
   text-decoration: none;
 }
+
+.form-control:disabled {
+  background-color: #dddddd4d;
+  border-color: #dddddd4d;
+}
+
+.disabled-label {
+  color: #dddddd4d;
+}
