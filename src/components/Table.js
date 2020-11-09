@@ -12,7 +12,8 @@ const Table = ({
 	setError,
 	entries,
 	reload,
-	isSegregated
+	isSegregated,
+	title
 }) => {
 	const { deleteEntry } = useEntryContext();
 	const { toggleModal } = useLocalContext();
@@ -51,9 +52,10 @@ const Table = ({
 	));
 
 
-	const rows = entry => fields.map(field => (
+	const rows = entry => fields.map((field, ix) => (
 		<td
 			key={`${field}-${entry[field]}-${entry._id}`}
+			className={ix === 0 ? 'w-30' : ix === 1 ? 'w-10' : ix === 2 ? 'w-25' : ix === 3 ? 'w-10' : 'w-25'}
 			onClick={() => isAdmin ? toggleModal(<EditEntryModal entry={entry} reload={reload} />)() : {}}
 		>
 			{field === 'bracket' ? bracketEnums[entry[field]] : entry[field]}
@@ -62,12 +64,13 @@ const Table = ({
 
 	return (
 		<TableRS dark striped hover className='sortable'>
+			{isSegregated && <caption>{title}</caption>}
 			<thead>
 				<tr>
 					{headers}
 
 					{isAdmin && (
-						<th>
+						<th className='w-25'>
 							<button
 								className='btn btn-danger'
 								onClick={checkHeadersBefore({ method: deleteEntries, errorMethod: setError, cb: reload })}

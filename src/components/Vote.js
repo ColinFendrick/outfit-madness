@@ -76,10 +76,10 @@ const Vote = () => {
 							entry && (
 								<Col
 									key={entry._id}
-									className='d-flex flex-column align-items-center justify-content-center vote-option'
+									className='d-flex flex-column align-items-center justify-content-space-between vote-option'
 									onClick={() => handleVote(entry)}
 								>
-									<img src={entry.imageURL} alt='Tim Duncan' />
+									<img src={entry.imageURL} alt={entry.name} />
 									<span>{entry.name}: {entry.seed} seed in {bracketEnums[entry.bracket]}</span>
 								</Col>
 							)

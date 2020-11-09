@@ -11,18 +11,16 @@
   color: #ddd;
 }
 
-.vote-option {
-}
-
 .vote-option > img {
-  width: 50%;
-  height: 70%;
+  width: 55%;
+  height: 85%;
   transition: width 0.2s ease, height 0.2s ease, boxshadow 0.1s ease-in;
+  margin: 2rem 0;
 }
 
-.vote-option:hover > img{
-  width: 55%;
-  height: 75%;
+.vote-option > img:hover {
+  width: 58.234%;
+  height: 90%;
   box-shadow: 0 3px 30px #dddddd4d;
 }
 
@@ -49,4 +47,19 @@
 
 .disabled-label {
   color: #dddddd4d;
+}
+
+.w-30 {
+  width: 30%;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+caption {
+  caption-side: top;
+  color: #ddd;
+  font-weight: bolder;
+  font-size: 1.2em;
 }

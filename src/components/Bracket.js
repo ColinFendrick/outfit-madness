@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useEntryContext, useUserContext, useLocalContext } from '../hooks';
 import { EditEntryModal } from './modals';
-import { brackets, excludedBrackets } from '../constants/brackets';
+import { brackets, excludedBrackets, bracketEnums } from '../constants/brackets';
 import { Table } from '.';
 
 const Bracket = () => {
@@ -72,8 +72,8 @@ const Bracket = () => {
 								entries={entries.filter(entry => bracket === entry.bracket)}
 								deleteEntries={() => deleteBracket(bracket)}
 								isSegregated={true}
+								title={bracketEnums[bracket]}
 								key={`${bracket}-table`}
-
 							/>
 						)) : (
 							<Table
