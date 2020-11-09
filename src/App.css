@@ -57,6 +57,10 @@
   width: 10%;
 }
 
+td {
+  cursor: pointer;
+}
+
 caption {
   caption-side: top;
   color: #ddd;
