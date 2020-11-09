@@ -29,7 +29,7 @@ const EditUserModal = ({ user }) => {
 	};
 
 	const onSubmit = async ({ validateNewPassword, ...data }) => {
-		if (data.newPassword !== validateNewPassword) {
+		if (data.newPassword && data.newPassword !== validateNewPassword) {
 			return setError('newPassword', {
 				type: 'mismatch', message: 'New Passwords do not match'
 			});

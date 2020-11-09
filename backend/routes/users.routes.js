@@ -14,4 +14,6 @@ router.get('/users/:id', [verifyToken, isTokenSameAsTarget], users.getUser);
 
 router.put('/users/:id', [verifyToken, isTokenSameAsTarget, verifyOldPassword], users.updateUser);
 
+router.put('/users/vote/:id', [verifyToken, isTokenSameAsTarget], users.updateUser);
+
 module.exports = router;

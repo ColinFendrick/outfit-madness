@@ -63,7 +63,7 @@ const useUserContext = () => {
 		const { voting: { currentSeed, bracket }, id } = currentUser;
 
 		const handleVote = checkHeadersBefore({
-			method: AuthService.updateCurrentUser,
+			method: AuthService.updateUserVote,
 			cb: user => {
 				setCurrentUser(user);
 				localStorage.setItem('user', JSON.stringify(user));
@@ -78,7 +78,7 @@ const useUserContext = () => {
 					currentSeed: [currentSeed[0] + 1, currentSeed[1] - 1]
 				}
 			});
-		} else if (bracket !== brackets[3]) {
+		} else if (bracket !== brackets[4]) {
 			const currentBracketIx = brackets.findIndex(el => el === bracket);
 			handleVote({
 				_id: id,

@@ -38,6 +38,8 @@ const getUserById = data => http.get(`/users/${data._id}`);
 
 const updateCurrentUser = data => http.put(`/users/${data._id}`, data);
 
+const updateUserVote = data => http.put(`/users/vote/${data._id}`, data);
+
 // admin:
 const getAllUsers = () => http.get('/admin/users');
 
@@ -50,6 +52,7 @@ const auth = {
 	getLocalUser,
 	getUserById,
 	updateCurrentUser,
+	updateUserVote,
 
 	// admin:
 	getAllUsers,
