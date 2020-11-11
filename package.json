@@ -43,5 +43,6 @@
   },
   "devDependencies": {
     "eslint": "^7.12.1"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }
